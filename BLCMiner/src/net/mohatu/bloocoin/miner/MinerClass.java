@@ -17,6 +17,10 @@
 
 package net.mohatu.bloocoin.miner;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -70,6 +74,14 @@ public class MinerClass implements Runnable {
 				if (sb.toString().startsWith(difficulty)) {
 					MainView.updateSolved(currentString);
 					System.out.println("Success: " + currentString);
+					try {
+					    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("BLC_Solved.txt", true)));
+					    out.println(currentString);
+					    out.close();
+					} catch (IOException e) {
+					    //Error
+						e.printStackTrace();
+					}
 				}
 			}
 		}
