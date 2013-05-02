@@ -22,6 +22,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.BorderLayout;
 import javax.swing.JButton;
@@ -71,6 +73,18 @@ public class MainView {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		try {
+			UIManager.setLookAndFeel(UIManager
+					.getSystemLookAndFeelClassName());
+		} catch (UnsupportedLookAndFeelException e) {
+			// handle exception
+		} catch (ClassNotFoundException e) {
+			// handle exception
+		} catch (InstantiationException e) {
+			// handle exception
+		} catch (IllegalAccessException e) {
+			// handle exception
+		}
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setTitle("BLC Miner");
 		frmBlcMiner.setBounds(100, 100, 450, 191);
@@ -83,6 +97,7 @@ public class MainView {
 		JButton btnStartMining = new JButton("Start Mining");
 		btnStartMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//Start mining
 				Thread miner = new Thread(new MinerHandler());
 				Thread khs = new Thread(new KhsClass());
 				miner.start();
@@ -96,6 +111,7 @@ public class MainView {
 		JButton btnStopMining = new JButton("Stop Mining");
 		btnStopMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Stop mining
 				mining = false;
 			}
 		});
@@ -137,7 +153,6 @@ public class MainView {
 
 	public static void updateCounter() {
 		counter++;
-		// lblTriedAmount.setText(Integer.toString(Integer.parseInt(lblTriedAmount.getText())+1));
 	}
 
 	public static void updateKhs(double khs) {
@@ -152,7 +167,6 @@ public class MainView {
 	}
 
 	public static int getCounter() {
-		// return Integer.parseInt(lblTriedAmount.getText());
 		return counter;
 	}
 
