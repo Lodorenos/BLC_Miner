@@ -86,8 +86,9 @@ public class MainView {
 			// handle exception
 		}
 		frmBlcMiner = new JFrame();
+		frmBlcMiner.setResizable(false);
 		frmBlcMiner.setTitle("BLC Miner");
-		frmBlcMiner.setBounds(100, 100, 450, 191);
+		frmBlcMiner.setBounds(100, 100, 442, 184);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
