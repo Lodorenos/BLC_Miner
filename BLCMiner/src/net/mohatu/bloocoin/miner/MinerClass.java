@@ -56,7 +56,7 @@ public class MinerClass implements Runnable {
 		MessageDigest md = MessageDigest.getInstance("SHA-512");
 		StringBuffer sb;
 		while (MainView.getStatus()) {
-		for (int counter = 0; counter < 999999999; counter++) {
+		for (int counter = 0; counter < 1000000000; counter++) {
 				MainView.updateCounter();
 				sb = new StringBuffer();
 				currentString = startString + counter;

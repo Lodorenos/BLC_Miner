@@ -42,6 +42,7 @@ public class MainView {
 	private static JLabel lblSolvedAmount;
 	private static JLabel lblKHsAmount;
 	private static JTable table;
+	private static JButton btnStartMining;
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0);
 
@@ -95,9 +96,11 @@ public class MainView {
 		frmBlcMiner.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		JButton btnStartMining = new JButton("Start Mining");
+		btnStartMining = new JButton("Start Mining");
 		btnStartMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//disable start button
+				btnStartMining.setEnabled(false);
 				//Start mining
 				Thread miner = new Thread(new MinerHandler());
 				Thread khs = new Thread(new KhsClass());
@@ -114,6 +117,8 @@ public class MainView {
 			public void actionPerformed(ActionEvent e) {
 				//Stop mining
 				mining = false;
+				//enable start button
+				btnStartMining.setEnabled(true);
 			}
 		});
 		btnStopMining.setBounds(10, 118, 179, 23);
