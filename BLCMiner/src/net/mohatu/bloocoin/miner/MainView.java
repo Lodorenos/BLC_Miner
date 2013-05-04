@@ -49,6 +49,8 @@ public class MainView {
 	private JFrame frmBlcMiner;
 	private static String addr = "";
 	private static String key = "";
+	private static final String url = "bloocoin.zapto.org";
+	private static final int port = 3122;
 	private static JLabel lblStatus;
 	private static JLabel lblTriedAmount;
 	private static JLabel lblSolvedAmount;
@@ -57,6 +59,7 @@ public class MainView {
 	private static JButton btnStartMining;
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0);
+	private static JLabel lblBLC;
 
 
 	/**
@@ -171,10 +174,15 @@ public class MainView {
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 152, 414, 14);
+		lblStatus.setBounds(10, 152, 349, 14);
 		panel.add(lblStatus);
 		
+		lblBLC = new JLabel("BLC: 0");
+		lblBLC.setBounds(369, 152, 55, 14);
+		panel.add(lblBLC);
+		
 		loadData();
+		getCoins();
 	}
 
 	public static void updateCounter() {
@@ -211,6 +219,23 @@ public class MainView {
 	
 	public static String getKey(){
 		return key;
+	}
+	
+	public static String getURL(){
+		return url;
+	}
+	
+	public static int getPort(){
+		return port;
+	}
+	
+	public static void updateBLC(int blc){
+		lblBLC.setText("BLC: " + Integer.toString(blc));
+	}
+	
+	private static void getCoins(){
+		Thread gc = new Thread(new CoinClass());
+		gc.start();
 	}
 	
 	private static void loadData() {

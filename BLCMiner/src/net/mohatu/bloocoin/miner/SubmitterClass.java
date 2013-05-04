@@ -35,8 +35,8 @@ public class SubmitterClass implements Runnable {
 
 	String hash = "";
 	String solution = "";
-	String url = "bloocoin.zapto.org";
-	int port = 3122;
+	String url = MainView.getURL();
+	int port = MainView.getPort();
 	String addr = "";
 	String key = "";
 	boolean submitted = false;
@@ -101,5 +101,7 @@ public class SubmitterClass implements Runnable {
 			e.printStackTrace();
 			MainView.updateStatusText("Submission of " + solution + " failed, connection failed!", Color.red);
 		}
+		Thread gc = new Thread(new CoinClass());
+		gc.start();
 	}
 }
