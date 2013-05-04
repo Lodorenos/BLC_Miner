@@ -108,7 +108,7 @@ public class MainView {
 		}
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setResizable(false);
-		frmBlcMiner.setTitle("BLC Miner");
+		frmBlcMiner.setTitle("BLC Client");
 		frmBlcMiner.setBounds(100, 100, 442, 500);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -283,14 +283,15 @@ public class MainView {
 	}
 	
 	private static void getTransactions(){
+		clearDFM();
 		Thread gt = new Thread(new TransactionClass());
 		gt.start();
 	}
 	
 	public static void clearDFM(){
-		for(int i = 0; i<transactions.getRowCount();i++){
-			transactions.removeRow(i);
-		}	
+		for (int i = transactions.getRowCount() - 1; i >= 0; i--) {
+	        transactions.removeRow(i);
+	    }	
 	}
 	
 	public static void addTransaction(String trans){
