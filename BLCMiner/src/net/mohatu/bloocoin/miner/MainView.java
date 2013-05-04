@@ -241,7 +241,7 @@ public class MainView {
 	private static void loadData() {
 		try {
 			FileInputStream stream = new FileInputStream(new File(
-					"C:/bloostamp"));
+					"bloostamp"));
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
 					fc.size());
