@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -190,7 +191,10 @@ public class MainView {
 					    " ©2013 Mohatu.net\nLicenced under the GNU GPLv3 license","Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnInfo.setIcon(new ImageIcon("qm.png"));
+		String imgLocation = "/images/qm.png";  
+        URL imageURL = getClass().getResource(imgLocation);  
+        ImageIcon icon = new ImageIcon(imageURL); 
+		btnInfo.setIcon(icon);
 		btnInfo.setBounds(156, 43, 33, 35);
 		panel.add(btnInfo);
 		
