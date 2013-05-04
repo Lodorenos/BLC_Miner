@@ -190,7 +190,7 @@ public class MainView {
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(frmBlcMiner,
-					    " ©2013 Mohatu.net\nLicenced under the GNU GPLv3 license","Info",JOptionPane.INFORMATION_MESSAGE);
+					    " ©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));

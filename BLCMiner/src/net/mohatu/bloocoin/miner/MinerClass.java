@@ -21,9 +21,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class MinerClass implements Runnable {
 	private String difficulty = "0000000";
@@ -57,26 +58,17 @@ public class MinerClass implements Runnable {
 	public void mine() throws NoSuchAlgorithmException {
 
 		String currentString;
-		MessageDigest md = MessageDigest.getInstance("SHA-512");
-		StringBuffer sb;
-		// String testString = "dx3NAa"; //dx3NAa257363
+		//String testString = "dx3NAa"; //dx3NAa257363
 		while (MainView.getStatus()) {
 			String startString = randomString();
+			String hash = "";
 			System.out.println("Starting: " + startString);
 			for (int counter = 0; counter <= 10000000; counter++) {
 				MainView.updateCounter();
-				sb = new StringBuffer();
 				currentString = startString + counter;
-				md.reset();
-				md.update(currentString.getBytes());
-				byte byteData[] = md.digest();
-				for (int i = 0; i < byteData.length; i++) {
-					sb.append(Integer
-							.toString((byteData[i] & 0xff) + 0x100, 16)
-							.substring(1));
-				}
-				if (sb.toString().startsWith(difficulty)) {
-					Thread sub = new Thread(new SubmitterClass(sb.toString(),
+				hash = DigestUtils.sha512Hex(currentString);
+				if(hash.startsWith(difficulty)){
+					Thread sub = new Thread(new SubmitterClass(hash,
 							currentString));
 					sub.start();
 					MainView.updateSolved(currentString);

@@ -21,10 +21,7 @@ public class MinerHandler implements Runnable {
 	private int processors = Runtime.getRuntime().availableProcessors();
 	@Override
 	public void run() {
-		if(processors<2){
-			processors = 2;
-		}
-		for (int i = 0; i < processors/2; i++) {
+		for (int i = 0; i < (processors/2)+1; i++) {
 			Thread miner = new Thread(new MinerClass(7));
 			miner.start();
 			System.out.println("Thread "+(i+1)+" started.");
