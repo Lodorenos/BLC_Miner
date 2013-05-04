@@ -47,7 +47,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class MainView {
 	private static boolean mining = true;
-	private static int counter = 0;
+	private static long counter = 0;
 	private JFrame frmBlcMiner;
 	private static String addr = "";
 	private static String key = "";
@@ -235,7 +235,7 @@ public class MainView {
 
 	public static void updateKhs(double khs) {
 		lblKHsAmount.setText(Double.toString(khs));
-		lblTriedAmount.setText(Integer.toString(counter));
+		lblTriedAmount.setText(Long.toString(counter));
 	}
 
 	public static void updateSolved(String solution) {
@@ -244,7 +244,7 @@ public class MainView {
 		solved.addRow(new Object[] { solution });
 	}
 
-	public static int getCounter() {
+	public static long getCounter() {
 		return counter;
 	}
 
