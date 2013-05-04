@@ -1,19 +1,19 @@
 /*
-* Copyright (C) 2013 Mohatu.net
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>
-*/
+ * Copyright (C) 2013 Mohatu.net
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
 
 package net.mohatu.bloocoin.miner;
 
@@ -55,13 +55,15 @@ public class MinerClass implements Runnable {
 	}
 
 	public void mine() throws NoSuchAlgorithmException {
-		String startString = randomString();
+
 		String currentString;
 		MessageDigest md = MessageDigest.getInstance("SHA-512");
 		StringBuffer sb;
-		//String testString = "dx3NAa"; //dx3NAa257363
+		// String testString = "dx3NAa"; //dx3NAa257363
 		while (MainView.getStatus()) {
-		for (int counter = 0; counter < 1000000000; counter++) {
+			String startString = randomString();
+			System.out.println("Starting: " + startString);
+			for (int counter = 0; counter <= 10000000; counter++) {
 				MainView.updateCounter();
 				sb = new StringBuffer();
 				currentString = startString + counter;
@@ -73,27 +75,28 @@ public class MinerClass implements Runnable {
 							.toString((byteData[i] & 0xff) + 0x100, 16)
 							.substring(1));
 				}
-				if(!MainView.getStatus()){
-					counter = 1000000000;
-					System.out.println("STOPPING");
-				}
 				if (sb.toString().startsWith(difficulty)) {
-					Thread sub = new Thread(new SubmitterClass(sb.toString(), currentString));
+					Thread sub = new Thread(new SubmitterClass(sb.toString(),
+							currentString));
 					sub.start();
 					MainView.updateSolved(currentString);
 					System.out.println("Success: " + currentString);
 					try {
-					    PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("BLC_Solved.txt", true)));
-					    out.println(currentString);
-					    out.close();
+						PrintWriter out = new PrintWriter(new BufferedWriter(
+								new FileWriter("BLC_Solved.txt", true)));
+						out.println(currentString);
+						out.close();
 					} catch (IOException e) {
-					    //Error
+						// Error
 						e.printStackTrace();
 					}
 				}
+				if (!MainView.getStatus()) {
+					counter = 10000000;
+					System.out.println("STOPPING");
+				}
 			}
 		}
-
 	}
 
 	public String randomString() {
@@ -106,7 +109,6 @@ public class MinerClass implements Runnable {
 		for (int i = 0; i < limit; i++) {
 			buf.append(chars.charAt(r.nextInt(chars.length())));
 		}
-		System.out.println(buf);
 		return buf.toString();
 	}
 
