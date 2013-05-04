@@ -20,7 +20,9 @@ package net.mohatu.bloocoin.miner;
 import java.awt.Color;
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.UIManager;
@@ -180,6 +182,17 @@ public class MainView {
 		lblBLC = new JLabel("BLC: 0");
 		lblBLC.setBounds(369, 152, 55, 14);
 		panel.add(lblBLC);
+		
+		JButton btnInfo = new JButton("");
+		btnInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(frmBlcMiner,
+					    " ©2013 Mohatu.net\nLicenced under the GNU GPLv3 license","Info",JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		btnInfo.setIcon(new ImageIcon("qm.png"));
+		btnInfo.setBounds(156, 43, 33, 35);
+		panel.add(btnInfo);
 		
 		loadData();
 		getCoins();
