@@ -15,6 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
+/* 
+ * SubmitterClass.java
+ * Submits solution to the server
+ */
+
 package net.mohatu.bloocoin.miner;
 
 import java.awt.Color;

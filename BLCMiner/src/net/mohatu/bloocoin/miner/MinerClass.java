@@ -65,6 +65,7 @@ public class MinerClass implements Runnable {
 				MainView.updateCounter();
 				sb = new StringBuffer();
 				currentString = startString + counter;
+				md.reset();
 				md.update(currentString.getBytes());
 				byte byteData[] = md.digest();
 				for (int i = 0; i < byteData.length; i++) {
