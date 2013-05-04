@@ -17,6 +17,7 @@
 
 package net.mohatu.bloocoin.miner;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -31,6 +32,14 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -38,6 +47,9 @@ public class MainView {
 	private static boolean mining = true;
 	private static int counter = 0;
 	private JFrame frmBlcMiner;
+	private static String addr = "";
+	private static String key = "";
+	private static JLabel lblStatus;
 	private static JLabel lblTriedAmount;
 	private static JLabel lblSolvedAmount;
 	private static JLabel lblKHsAmount;
@@ -89,7 +101,7 @@ public class MainView {
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setResizable(false);
 		frmBlcMiner.setTitle("BLC Miner");
-		frmBlcMiner.setBounds(100, 100, 442, 184);
+		frmBlcMiner.setBounds(100, 100, 442, 200);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
@@ -107,6 +119,7 @@ public class MainView {
 				miner.start();
 				khs.start();
 				mining = true;
+				updateStatusText("Mining started", Color.black);
 			}
 		});
 		btnStartMining.setBounds(10, 84, 179, 23);
@@ -119,6 +132,7 @@ public class MainView {
 				mining = false;
 				//enable start button
 				btnStartMining.setEnabled(true);
+				updateStatusText("Mining stopped", Color.red);
 			}
 		});
 		btnStopMining.setBounds(10, 118, 179, 23);
@@ -155,6 +169,12 @@ public class MainView {
 		scrollPane.setToolTipText("Solved hashes");
 		scrollPane.setBounds(199, 11, 225, 131);
 		panel.add(scrollPane);
+		
+		lblStatus = new JLabel("Status: Loading user data");
+		lblStatus.setBounds(10, 152, 414, 14);
+		panel.add(lblStatus);
+		
+		loadData();
 	}
 
 	public static void updateCounter() {
@@ -178,5 +198,43 @@ public class MainView {
 
 	public static boolean getStatus() {
 		return mining;
+	}
+	
+	public static void updateStatusText(String status, Color color){
+		lblStatus.setText("Status: " + status);
+		lblStatus.setForeground(color);
+	}
+	
+	public static String getAddr(){
+		return addr;
+	}
+	
+	public static String getKey(){
+		return key;
+	}
+	
+	private static void loadData() {
+		try {
+			FileInputStream stream = new FileInputStream(new File(
+					"C:/bloostamp"));
+			FileChannel fc = stream.getChannel();
+			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
+					fc.size());
+			String data = (Charset.defaultCharset().decode(bb).toString());
+			addr = data.split(":")[0];
+			key = data.split(":")[1];
+			stream.close();
+		} catch (FileNotFoundException fnfe) {
+			MainView.updateStatusText("Could not find the bloostamp file!",Color.red);
+			System.out.println("Unable to find the bloostamp file.");
+			fnfe.printStackTrace();
+		} catch (IOException ioe) {
+			MainView.updateStatusText("IOException",Color.red);
+			System.out.println("IOException.");
+			ioe.printStackTrace();
+		} finally {
+			MainView.updateStatusText("Bloostamp data loaded successfully",Color.black);
+			System.out.println("Bloostamp data loaded.");
+		}
 	}
 }

@@ -59,6 +59,7 @@ public class MinerClass implements Runnable {
 		String currentString;
 		MessageDigest md = MessageDigest.getInstance("SHA-512");
 		StringBuffer sb;
+		//String testString = "dx3NAa"; //dx3NAa257363
 		while (MainView.getStatus()) {
 		for (int counter = 0; counter < 1000000000; counter++) {
 				MainView.updateCounter();
@@ -71,7 +72,13 @@ public class MinerClass implements Runnable {
 							.toString((byteData[i] & 0xff) + 0x100, 16)
 							.substring(1));
 				}
+				if(!MainView.getStatus()){
+					counter = 1000000000;
+					System.out.println("STOPPING");
+				}
 				if (sb.toString().startsWith(difficulty)) {
+					Thread sub = new Thread(new SubmitterClass(sb.toString(), currentString));
+					sub.start();
 					MainView.updateSolved(currentString);
 					System.out.println("Success: " + currentString);
 					try {
