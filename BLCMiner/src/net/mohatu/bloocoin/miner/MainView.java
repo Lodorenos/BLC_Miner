@@ -44,6 +44,7 @@ import java.nio.charset.Charset;
 
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.SwingConstants;
 
 public class MainView {
 	private static boolean mining = true;
@@ -179,11 +180,12 @@ public class MainView {
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 447, 349, 14);
+		lblStatus.setBounds(10, 447, 319, 14);
 		panel.add(lblStatus);
 		
 		lblBLC = new JLabel("BLC: 0");
-		lblBLC.setBounds(371, 447, 55, 14);
+		lblBLC.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblBLC.setBounds(335, 447, 91, 14);
 		panel.add(lblBLC);
 		
 		JButton btnInfo = new JButton("");
