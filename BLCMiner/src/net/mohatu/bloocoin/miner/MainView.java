@@ -59,8 +59,11 @@ public class MainView {
 	private static JLabel lblKHsAmount;
 	private static JTable table;
 	private static JButton btnStartMining;
+	public static JScrollPane scrollPane;
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0);
+	public static DefaultTableModel transactions = new DefaultTableModel(
+			new Object[] { "To:", "From:","Amount:" }, 0);
 	private static JLabel lblBLC;
 
 
@@ -106,7 +109,7 @@ public class MainView {
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setResizable(false);
 		frmBlcMiner.setTitle("BLC Miner");
-		frmBlcMiner.setBounds(100, 100, 442, 200);
+		frmBlcMiner.setBounds(100, 100, 442, 500);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel panel = new JPanel();
@@ -170,17 +173,17 @@ public class MainView {
 		table = new JTable(1, 1);
 		table.setModel(solved);
 
-		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Solved hashes");
 		scrollPane.setBounds(199, 11, 225, 131);
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 152, 349, 14);
+		lblStatus.setBounds(10, 447, 349, 14);
 		panel.add(lblStatus);
 		
 		lblBLC = new JLabel("BLC: 0");
-		lblBLC.setBounds(369, 152, 55, 14);
+		lblBLC.setBounds(371, 447, 55, 14);
 		panel.add(lblBLC);
 		
 		JButton btnInfo = new JButton("");
@@ -194,8 +197,36 @@ public class MainView {
 		btnInfo.setBounds(156, 43, 33, 35);
 		panel.add(btnInfo);
 		
+		table = new JTable(1, 1);
+		table.setModel(transactions);
+		
+		scrollPane = new JScrollPane(table);
+		scrollPane.setToolTipText("Transaction history");
+		scrollPane.setBounds(10, 152, 414, 250);
+		panel.add(scrollPane);
+		
+		JButton btnSendCoins = new JButton("Send Coins");
+		btnSendCoins.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Thread sv = new Thread(new SendView());
+				sv.start();
+			}
+		});
+		btnSendCoins.setBounds(10, 413, 179, 23);
+		panel.add(btnSendCoins);
+		
+		JButton btnNewButton = new JButton("Refresh Transactions");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getTransactions();
+			}
+		});
+		btnNewButton.setBounds(245, 413, 179, 23);
+		panel.add(btnNewButton);
+		
 		loadData();
 		getCoins();
+		getTransactions();
 	}
 
 	public static void updateCounter() {
@@ -249,6 +280,26 @@ public class MainView {
 	private static void getCoins(){
 		Thread gc = new Thread(new CoinClass());
 		gc.start();
+	}
+	
+	private static void getTransactions(){
+		Thread gt = new Thread(new TransactionClass());
+		gt.start();
+	}
+	
+	public static void clearDFM(){
+		for(int i = 0; i<transactions.getRowCount();i++){
+			transactions.removeRow(i);
+		}	
+	}
+	
+	public static void addTransaction(String trans){
+		String[] transactionData = trans.split(",");
+		transactionData[1]=transactionData[1].replace(" amount: ", "");
+		transactionData[2]=transactionData[2].replace(" from: ", "");
+		transactionData[2]=transactionData[2].replace("}", "");
+		transactionData[2]=transactionData[2].replace("]", "");
+		transactions.addRow(new Object[] {transactionData[0],transactionData[2],transactionData[1]});
 	}
 	
 	private static void loadData() {
