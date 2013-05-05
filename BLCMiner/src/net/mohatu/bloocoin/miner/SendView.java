@@ -79,8 +79,8 @@ public class SendView implements Runnable {
 		JButton btnSend = new JButton("Send");
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (tfAddr.getText().length() > 0
-						&& tfAmount.getText().length() > 0) {
+				if (tfAddr.getText().length() == 40
+						&& Integer.parseInt(tfAmount.getText()) > 0) {
 					Object[] options = { "Yes", "No" };
 					int answer = JOptionPane.showOptionDialog(
 							MainView.scrollPane,
