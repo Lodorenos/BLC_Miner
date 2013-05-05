@@ -60,6 +60,10 @@ public class MainView {
 	private static JLabel lblKHsAmount;
 	private static JTable table;
 	private static JButton btnStartMining;
+	private static JLabel lblThreads;
+	private static JLabel lblThreadAmount;
+	private static JButton btnLeft;
+	private static JButton btnRight;
 	public static JScrollPane scrollPane;
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0);
@@ -122,6 +126,8 @@ public class MainView {
 			public void actionPerformed(ActionEvent arg0) {
 				//disable start button
 				btnStartMining.setEnabled(false);
+				btnLeft.setEnabled(false);
+				btnRight.setEnabled(false);
 				//Start mining
 				Thread miner = new Thread(new MinerHandler());
 				Thread khs = new Thread(new KhsClass());
@@ -141,6 +147,8 @@ public class MainView {
 				mining = false;
 				//enable start button
 				btnStartMining.setEnabled(true);
+				btnRight.setEnabled(true);
+				btnLeft.setEnabled(true);
 				updateStatusText("Mining stopped", Color.red);
 			}
 		});
@@ -176,7 +184,7 @@ public class MainView {
 
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Solved hashes");
-		scrollPane.setBounds(199, 11, 225, 131);
+		scrollPane.setBounds(199, 46, 225, 95);
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
@@ -192,11 +200,11 @@ public class MainView {
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(frmBlcMiner,
-					    " ©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
+					    "©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));
-		btnInfo.setBounds(156, 43, 33, 35);
+		btnInfo.setBounds(156, 38, 33, 35);
 		panel.add(btnInfo);
 		
 		table = new JTable(1, 1);
@@ -226,9 +234,42 @@ public class MainView {
 		btnNewButton.setBounds(245, 413, 179, 23);
 		panel.add(btnNewButton);
 		
+		lblThreads = new JLabel("Threads:");
+		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
+		lblThreads.setBounds(234, 15, 46, 14);
+		panel.add(lblThreads);
+		
+		btnLeft = new JButton("");
+		btnLeft.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(getThreads()>1){
+					setThreads(getThreads()-1);
+				}
+			}
+		});
+		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/left.png")));
+		btnLeft.setBounds(290, 11, 39, 23);
+		panel.add(btnLeft);
+		
+		btnRight = new JButton("");
+		btnRight.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setThreads(getThreads()+1);
+			}
+		});
+		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/right.png")));
+		btnRight.setBounds(385, 11, 39, 23);
+		panel.add(btnRight);
+		
+		lblThreadAmount = new JLabel("0");
+		lblThreadAmount.setHorizontalAlignment(SwingConstants.CENTER);
+		lblThreadAmount.setBounds(335, 15, 40, 14);
+		panel.add(lblThreadAmount);
+		
 		loadData();
 		getCoins();
 		getTransactions();
+		setThreads((Runtime.getRuntime().availableProcessors()/2)+1);
 	}
 
 	public static void updateCounter() {
@@ -294,6 +335,14 @@ public class MainView {
 		for (int i = transactions.getRowCount() - 1; i >= 0; i--) {
 	        transactions.removeRow(i);
 	    }	
+	}
+	
+	public static int getThreads(){
+		return Integer.parseInt(lblThreadAmount.getText());
+	}
+	
+	public static void setThreads(int threads){
+		lblThreadAmount.setText(Integer.toString(threads));
 	}
 	
 	public static void addTransaction(String trans){
