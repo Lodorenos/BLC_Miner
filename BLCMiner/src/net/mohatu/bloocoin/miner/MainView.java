@@ -184,7 +184,7 @@ public class MainView {
 
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Solved hashes");
-		scrollPane.setBounds(199, 46, 225, 95);
+		scrollPane.setBounds(199, 38, 225, 103);
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
@@ -200,7 +200,7 @@ public class MainView {
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(frmBlcMiner,
-					    "©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
+					    "Your address: \n"+addr+"\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));
@@ -267,9 +267,6 @@ public class MainView {
 		panel.add(lblThreadAmount);
 		
 		loadData();
-		getCoins();
-		getTransactions();
-		setThreads((Runtime.getRuntime().availableProcessors()/2)+1);
 	}
 
 	public static void updateCounter() {
@@ -354,6 +351,10 @@ public class MainView {
 		transactions.addRow(new Object[] {transactionData[0],transactionData[2],transactionData[1]});
 	}
 	
+	public static void loadDataPub(){
+		loadData();
+	}
+	
 	private static void loadData() {
 		try {
 			FileInputStream stream = new FileInputStream(new File(
@@ -365,17 +366,34 @@ public class MainView {
 			addr = data.split(":")[0];
 			key = data.split(":")[1];
 			stream.close();
+			MainView.updateStatusText("Bloostamp data loaded successfully",Color.black);
+			System.out.println("Bloostamp data loaded.");
+			System.out.println("Getting transactions.");
+			getTransactions();
+			System.out.println("Getting coin count.");
+			getCoins();
+			setThreads((Runtime.getRuntime().availableProcessors()/2)+1);
 		} catch (FileNotFoundException fnfe) {
 			MainView.updateStatusText("Could not find the bloostamp file!",Color.red);
-			System.out.println("Unable to find the bloostamp file.");
-			fnfe.printStackTrace();
+			System.out.println("Unable to find the bloostamp file");
+			
+			Object[] options = { "Yes", "No" };
+			int answer = JOptionPane.showOptionDialog(
+					MainView.scrollPane,
+					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)", "New Registration",
+					JOptionPane.YES_NO_OPTION,
+					JOptionPane.INFORMATION_MESSAGE, null, options,
+					options[1]);
+			if (answer == JOptionPane.YES_OPTION) {
+				Thread rc = new Thread(new RegisterClass());
+				rc.start();
+			} else {
+				System.exit(0);
+			}
 		} catch (IOException ioe) {
 			MainView.updateStatusText("IOException",Color.red);
 			System.out.println("IOException.");
 			ioe.printStackTrace();
-		} finally {
-			MainView.updateStatusText("Bloostamp data loaded successfully",Color.black);
-			System.out.println("Bloostamp data loaded.");
 		}
 	}
 }

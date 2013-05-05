@@ -18,6 +18,7 @@ public class SendView implements Runnable {
 	private JFrame frmSendCoins;
 	private JTextField tfAddr;
 	private JTextField tfAmount;
+	private JTextField tf127001Addr;
 
 	/**
 	 * Launch the application.
@@ -49,7 +50,7 @@ public class SendView implements Runnable {
 		frmSendCoins = new JFrame();
 		frmSendCoins.setResizable(false);
 		frmSendCoins.setTitle("Send Coins");
-		frmSendCoins.setBounds(100, 100, 407, 87);
+		frmSendCoins.setBounds(100, 100, 407, 125);
 		frmSendCoins.setLocationRelativeTo(MainView.scrollPane);
 		frmSendCoins.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -57,21 +58,21 @@ public class SendView implements Runnable {
 		frmSendCoins.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		JLabel lblRecipientAddress = new JLabel("Address:");
-		lblRecipientAddress.setBounds(10, 11, 111, 14);
+		JLabel lblRecipientAddress = new JLabel("Recipient Address:");
+		lblRecipientAddress.setBounds(10, 42, 111, 14);
 		panel.add(lblRecipientAddress);
 
 		tfAddr = new JTextField();
-		tfAddr.setBounds(88, 8, 303, 20);
+		tfAddr.setBounds(131, 39, 260, 20);
 		panel.add(tfAddr);
 		tfAddr.setColumns(10);
 
 		JLabel lblAmount = new JLabel("Amount: ");
-		lblAmount.setBounds(10, 36, 87, 14);
+		lblAmount.setBounds(10, 67, 87, 14);
 		panel.add(lblAmount);
 
 		tfAmount = new JTextField();
-		tfAmount.setBounds(88, 33, 86, 20);
+		tfAmount.setBounds(131, 64, 66, 20);
 		panel.add(tfAmount);
 		tfAmount.setColumns(10);
 
@@ -103,7 +104,7 @@ public class SendView implements Runnable {
 				}
 			}
 		});
-		btnSend.setBounds(184, 32, 98, 23);
+		btnSend.setBounds(207, 63, 87, 23);
 		panel.add(btnSend);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -112,7 +113,18 @@ public class SendView implements Runnable {
 				frmSendCoins.dispose();
 			}
 		});
-		btnCancel.setBounds(292, 32, 99, 23);
+		btnCancel.setBounds(304, 63, 87, 23);
 		panel.add(btnCancel);
+		
+		tf127001Addr = new JTextField();
+		tf127001Addr.setText(MainView.getAddr());
+		tf127001Addr.setEditable(false);
+		tf127001Addr.setColumns(10);
+		tf127001Addr.setBounds(131, 11, 260, 20);
+		panel.add(tf127001Addr);
+		
+		JLabel lblYourAddress = new JLabel("Your Address:");
+		lblYourAddress.setBounds(10, 14, 111, 14);
+		panel.add(lblYourAddress);
 	}
 }
