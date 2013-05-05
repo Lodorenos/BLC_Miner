@@ -25,6 +25,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -199,8 +200,11 @@ public class MainView {
 		JButton btnInfo = new JButton("");
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frmBlcMiner,
-					    "Your address: \n"+addr+"\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner","Info",JOptionPane.INFORMATION_MESSAGE);
+				String creatorAddress = "d40d1749657b1c36d24ebda0642c6b5af028c35cc  ";
+				JTextArea address = new JTextArea("Donate address: \n"+creatorAddress+"\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner");
+				address.setEditable(false);
+				JOptionPane.showMessageDialog(frmBlcMiner,address
+					    ,"Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));

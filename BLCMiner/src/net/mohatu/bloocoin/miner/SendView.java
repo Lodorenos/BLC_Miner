@@ -100,7 +100,7 @@ public class SendView implements Runnable {
 					}
 				}else{
 					JOptionPane.showMessageDialog(MainView.scrollPane,
-						    "Please enter a recipient address and an amount.","Alert",JOptionPane.ERROR_MESSAGE);
+						    "Please enter a valid recipient address and an integer amount.","Alert",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
