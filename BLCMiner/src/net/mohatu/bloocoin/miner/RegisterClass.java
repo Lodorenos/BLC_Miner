@@ -117,7 +117,7 @@ public class RegisterClass implements Runnable {
 		MainView.loadDataPub();
 
 		}catch(IOException e){
-			System.out.println("Saving failed:\n");
+			System.out.println("Saving failed:");
 			e.printStackTrace();
 		}
 	}
