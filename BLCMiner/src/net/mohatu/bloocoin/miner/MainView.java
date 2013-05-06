@@ -71,6 +71,9 @@ public class MainView {
 	public static DefaultTableModel transactions = new DefaultTableModel(
 			new Object[] { "To:", "From:","Amount:" }, 0);
 	private static JLabel lblBLC;
+	private static long startTime = System.nanoTime();
+	private JLabel lblTime;
+	private static JLabel lblTimeAmount;
 
 
 	/**
@@ -93,6 +96,7 @@ public class MainView {
 	 * Create the application.
 	 */
 	public MainView() {
+		System.out.println("Program start time: " + startTime);
 		initialize();
 	}
 
@@ -125,6 +129,7 @@ public class MainView {
 		btnStartMining = new JButton("Start Mining");
 		btnStartMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				startTime = System.nanoTime();
 				//disable start button
 				btnStartMining.setEnabled(false);
 				btnLeft.setEnabled(false);
@@ -138,7 +143,7 @@ public class MainView {
 				updateStatusText("Mining started", Color.black);
 			}
 		});
-		btnStartMining.setBounds(10, 84, 179, 23);
+		btnStartMining.setBounds(10, 90, 179, 23);
 		panel.add(btnStartMining);
 
 		JButton btnStopMining = new JButton("Stop Mining");
@@ -153,31 +158,31 @@ public class MainView {
 				updateStatusText("Mining stopped", Color.red);
 			}
 		});
-		btnStopMining.setBounds(10, 118, 179, 23);
+		btnStopMining.setBounds(10, 120, 179, 23);
 		panel.add(btnStopMining);
 
 		JLabel lblTried = new JLabel("Tried:");
-		lblTried.setBounds(10, 11, 46, 14);
+		lblTried.setBounds(10, 10, 46, 14);
 		panel.add(lblTried);
 
 		JLabel lblSolved = new JLabel("Solved:");
-		lblSolved.setBounds(10, 34, 46, 14);
+		lblSolved.setBounds(10, 30, 46, 14);
 		panel.add(lblSolved);
 
 		JLabel lblKhs = new JLabel("Kh/s:");
-		lblKhs.setBounds(10, 59, 46, 14);
+		lblKhs.setBounds(10, 50, 46, 14);
 		panel.add(lblKhs);
 
 		lblTriedAmount = new JLabel("0");
-		lblTriedAmount.setBounds(66, 11, 132, 14);
+		lblTriedAmount.setBounds(66, 10, 132, 14);
 		panel.add(lblTriedAmount);
 
 		lblSolvedAmount = new JLabel("0");
-		lblSolvedAmount.setBounds(66, 34, 46, 14);
+		lblSolvedAmount.setBounds(66, 30, 46, 14);
 		panel.add(lblSolvedAmount);
 
 		lblKHsAmount = new JLabel("0.0");
-		lblKHsAmount.setBounds(66, 59, 46, 14);
+		lblKHsAmount.setBounds(66, 50, 46, 14);
 		panel.add(lblKHsAmount);
 
 		table = new JTable(1, 1);
@@ -185,7 +190,7 @@ public class MainView {
 
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Solved hashes");
-		scrollPane.setBounds(199, 38, 225, 103);
+		scrollPane.setBounds(199, 44, 225, 99);
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
@@ -208,7 +213,7 @@ public class MainView {
 			}
 		});
 		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));
-		btnInfo.setBounds(156, 38, 33, 35);
+		btnInfo.setBounds(391, 5, 33, 35);
 		panel.add(btnInfo);
 		
 		table = new JTable(1, 1);
@@ -216,7 +221,7 @@ public class MainView {
 		
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Transaction history");
-		scrollPane.setBounds(10, 152, 414, 250);
+		scrollPane.setBounds(10, 154, 414, 248);
 		panel.add(scrollPane);
 		
 		JButton btnSendCoins = new JButton("Send Coins");
@@ -240,7 +245,7 @@ public class MainView {
 		
 		lblThreads = new JLabel("Threads:");
 		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblThreads.setBounds(234, 15, 46, 14);
+		lblThreads.setBounds(176, 14, 69, 14);
 		panel.add(lblThreads);
 		
 		btnLeft = new JButton("");
@@ -252,7 +257,7 @@ public class MainView {
 			}
 		});
 		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/left.png")));
-		btnLeft.setBounds(290, 11, 39, 23);
+		btnLeft.setBounds(245, 10, 39, 23);
 		panel.add(btnLeft);
 		
 		btnRight = new JButton("");
@@ -262,13 +267,21 @@ public class MainView {
 			}
 		});
 		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/right.png")));
-		btnRight.setBounds(385, 11, 39, 23);
+		btnRight.setBounds(340, 10, 39, 23);
 		panel.add(btnRight);
 		
 		lblThreadAmount = new JLabel("0");
 		lblThreadAmount.setHorizontalAlignment(SwingConstants.CENTER);
-		lblThreadAmount.setBounds(335, 15, 40, 14);
+		lblThreadAmount.setBounds(290, 14, 40, 14);
 		panel.add(lblThreadAmount);
+		
+		lblTime = new JLabel("Time:");
+		lblTime.setBounds(10, 70, 46, 14);
+		panel.add(lblTime);
+		
+		lblTimeAmount = new JLabel("00:00:00");
+		lblTimeAmount.setBounds(66, 70, 46, 14);
+		panel.add(lblTimeAmount);
 		
 		loadData();
 	}
@@ -280,6 +293,25 @@ public class MainView {
 	public static void updateKhs(double khs) {
 		lblKHsAmount.setText(Double.toString(khs));
 		lblTriedAmount.setText(Long.toString(counter));
+	}
+	
+	public static void setTime(int hour, int minute, int second){
+		String hourString, minuteString, secondString;
+		hourString = Integer.toString(hour);
+		minuteString = Integer.toString(minute);
+		secondString = Integer.toString(second);
+		
+		if(hour<10){
+			hourString = "0" + hour;
+		}
+		
+		if(minute<10){
+			minuteString = "0"+minute;
+		}
+		if(second<10){
+			secondString = "0"+second;
+		}
+		lblTimeAmount.setText(hourString+":"+minuteString+":"+secondString);
 	}
 
 	public static void updateSolved(String solution) {
@@ -353,6 +385,10 @@ public class MainView {
 		transactionData[2]=transactionData[2].replace("}", "");
 		transactionData[2]=transactionData[2].replace("]", "");
 		transactions.addRow(new Object[] {transactionData[0],transactionData[2],transactionData[1]});
+	}
+	
+	public static long getStartTime(){
+		return startTime;
 	}
 	
 	public static void loadDataPub(){

@@ -19,6 +19,7 @@ package net.mohatu.bloocoin.miner;
 
 public class KhsClass implements Runnable {
 
+	private int hour=0, minute=0, second=0;
 	@Override
 	public void run() {
 		boolean running = true;
@@ -30,6 +31,8 @@ public class KhsClass implements Runnable {
 				Thread.sleep(1000);
 				newAmount = MainView.getCounter();
 				MainView.updateKhs((double)(newAmount - oldAmount) / 1000);
+				convertTime(System.nanoTime() - MainView.getStartTime());
+				MainView.setTime(hour, minute, second);
 				if(!MainView.getStatus()){
 					running = false;
 				}
@@ -40,5 +43,12 @@ public class KhsClass implements Runnable {
 				Thread.currentThread().interrupt();
 		}
 		MainView.updateKhs(0);
+	}
+	
+	private void convertTime(long nanos){
+		int seconds = (int) (nanos / 1000000000);
+		hour = (seconds/3600);
+		minute = (seconds/60)-(hour*3600);
+		second = seconds - (minute*60) - (hour*3600);
 	}
 }
