@@ -48,7 +48,8 @@ public class KhsClass implements Runnable {
 	private void convertTime(long nanos){
 		int seconds = (int) (nanos / 1000000000);
 		hour = (seconds/3600);
-		minute = (seconds/60)-(hour*3600);
+		minute = ((seconds-(hour*3600))/60);
 		second = seconds - (minute*60) - (hour*3600);
+		//System.out.println(hour+":"+minute+":"+second+"   |   "+seconds);
 	}
 }

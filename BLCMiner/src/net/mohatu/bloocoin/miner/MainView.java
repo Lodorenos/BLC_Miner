@@ -280,7 +280,7 @@ public class MainView {
 		panel.add(lblTime);
 		
 		lblTimeAmount = new JLabel("00:00:00");
-		lblTimeAmount.setBounds(66, 70, 46, 14);
+		lblTimeAmount.setBounds(66, 70, 123, 14);
 		panel.add(lblTimeAmount);
 		
 		loadData();
@@ -302,7 +302,7 @@ public class MainView {
 		secondString = Integer.toString(second);
 		
 		if(hour<10){
-			hourString = "0" + hour;
+			hourString = "0"+hour;
 		}
 		
 		if(minute<10){
