@@ -68,9 +68,9 @@ public class SubmitterClass implements Runnable {
 		try {
 			String result = new String();
 			Socket sock = new Socket(this.url, this.port);
-			String command = "{\"cmd\":\"check"
-					+ "\",\"winning_string\":\"" + solution + "\",\"winning_hash\":\""
-					+ hash + "\",\"addr\":\"" + MainView.getAddr() + "\"}";
+			String command = "{\"cmd\":\"check" + "\",\"winning_string\":\""
+					+ solution + "\",\"winning_hash\":\"" + hash
+					+ "\",\"addr\":\"" + MainView.getAddr() + "\"}";
 			DataInputStream is = new DataInputStream(sock.getInputStream());
 			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
 			os.write(command.getBytes());
@@ -85,21 +85,24 @@ public class SubmitterClass implements Runnable {
 			is.close();
 			os.close();
 			sock.close();
-			if(result.contains("\"success\": true")){
+			if (result.contains("\"success\": true")) {
 				System.out.println("Result: Submitted");
 				submitted = true;
 				MainView.updateStatusText(solution + " submitted", Color.blue);
-			}else if(result.contains("\"success\": false")){
+			} else if (result.contains("\"success\": false")) {
 				System.out.println("Result: Failed");
 				submitted = true;
-				MainView.updateStatusText("Submission of " + solution + " failed, already exists!", Color.red);
+				MainView.updateStatusText("Submission of " + solution
+						+ " failed, already exists!", Color.red);
 			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			MainView.updateStatusText("Submission of " + solution + " failed, connection failed!", Color.red);
+			MainView.updateStatusText("Submission of " + solution
+					+ " failed, connection failed!", Color.red);
 		} catch (IOException e) {
 			e.printStackTrace();
-			MainView.updateStatusText("Submission of " + solution + " failed, connection failed!", Color.red);
+			MainView.updateStatusText("Submission of " + solution
+					+ " failed, connection failed!", Color.red);
 		}
 		Thread gc = new Thread(new CoinClass());
 		gc.start();

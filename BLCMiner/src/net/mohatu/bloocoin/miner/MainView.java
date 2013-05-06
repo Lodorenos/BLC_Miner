@@ -46,6 +46,7 @@ import java.nio.charset.Charset;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
+import java.awt.Font;
 
 public class MainView {
 	private static boolean mining = true;
@@ -225,22 +226,24 @@ public class MainView {
 		panel.add(scrollPane);
 		
 		JButton btnSendCoins = new JButton("Send Coins");
+		btnSendCoins.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnSendCoins.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Thread sv = new Thread(new SendView());
 				sv.start();
 			}
 		});
-		btnSendCoins.setBounds(10, 413, 179, 23);
+		btnSendCoins.setBounds(10, 413, 135, 23);
 		panel.add(btnSendCoins);
 		
 		JButton btnNewButton = new JButton("Refresh Transactions");
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getTransactions();
 			}
 		});
-		btnNewButton.setBounds(245, 413, 179, 23);
+		btnNewButton.setBounds(150, 413, 135, 23);
 		panel.add(btnNewButton);
 		
 		lblThreads = new JLabel("Threads:");
@@ -282,6 +285,29 @@ public class MainView {
 		lblTimeAmount = new JLabel("00:00:00");
 		lblTimeAmount.setBounds(66, 70, 123, 14);
 		panel.add(lblTimeAmount);
+		
+		JButton btnFromList = new JButton("From List");
+		btnFromList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//Send list to server
+				Object[] options = { "Yes", "No" };
+				int answer = JOptionPane.showOptionDialog(
+						MainView.scrollPane,
+						"This will send ALL solutions to\nthe server, and may take a while.\n\nContinue?","Send All?",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, null, options,
+						options[1]);
+				if (answer == JOptionPane.YES_OPTION) {
+					Thread slc = new Thread(new SubmitListClass());
+					slc.start();
+				} else {
+					// cancelled
+				}
+			}
+		});
+		btnFromList.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		btnFromList.setBounds(289, 413, 135, 23);
+		panel.add(btnFromList);
 		
 		loadData();
 	}
