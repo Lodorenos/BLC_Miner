@@ -75,7 +75,7 @@ public class MinerClass implements Runnable {
 					System.out.println("Success: " + currentString);
 					try {
 						PrintWriter out = new PrintWriter(new BufferedWriter(
-								new FileWriter("BLC_Solved.txt", true)));
+								new FileWriter(System.getProperty("user.dir") + "/BLC_Solved.txt", true)));
 						out.println(currentString);
 						out.close();
 					} catch (IOException e) {
