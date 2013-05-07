@@ -48,7 +48,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class MainView {
+public class MainView{
 	private static boolean mining = true;
 	private static long counter = 0;
 	private JFrame frmBlcMiner;
@@ -75,6 +75,8 @@ public class MainView {
 	private static long startTime = System.nanoTime();
 	private JLabel lblTime;
 	private static JLabel lblTimeAmount;
+	private JLabel lblTotalBlc;
+	private static JLabel lblTotalBLC;
 
 
 	/**
@@ -127,7 +129,8 @@ public class MainView {
 		frmBlcMiner.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 
-		btnStartMining = new JButton("Start Mining");
+		btnStartMining = new JButton("Start");
+		btnStartMining.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnStartMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				startTime = System.nanoTime();
@@ -144,10 +147,11 @@ public class MainView {
 				updateStatusText("Mining started", Color.black);
 			}
 		});
-		btnStartMining.setBounds(10, 90, 179, 23);
+		btnStartMining.setBounds(10, 120, 80, 23);
 		panel.add(btnStartMining);
 
-		JButton btnStopMining = new JButton("Stop Mining");
+		JButton btnStopMining = new JButton("Stop");
+		btnStopMining.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnStopMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//Stop mining
@@ -159,31 +163,34 @@ public class MainView {
 				updateStatusText("Mining stopped", Color.red);
 			}
 		});
-		btnStopMining.setBounds(10, 120, 179, 23);
+		btnStopMining.setBounds(110, 120, 80, 23);
 		panel.add(btnStopMining);
 
 		JLabel lblTried = new JLabel("Tried:");
+		lblTried.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblTried.setBounds(10, 10, 46, 14);
 		panel.add(lblTried);
 
 		JLabel lblSolved = new JLabel("Solved:");
+		lblSolved.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblSolved.setBounds(10, 30, 46, 14);
 		panel.add(lblSolved);
 
 		JLabel lblKhs = new JLabel("Kh/s:");
+		lblKhs.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblKhs.setBounds(10, 50, 46, 14);
 		panel.add(lblKhs);
 
 		lblTriedAmount = new JLabel("0");
-		lblTriedAmount.setBounds(66, 10, 132, 14);
+		lblTriedAmount.setBounds(70, 10, 123, 14);
 		panel.add(lblTriedAmount);
 
 		lblSolvedAmount = new JLabel("0");
-		lblSolvedAmount.setBounds(66, 30, 46, 14);
+		lblSolvedAmount.setBounds(70, 30, 46, 14);
 		panel.add(lblSolvedAmount);
 
 		lblKHsAmount = new JLabel("0.0");
-		lblKHsAmount.setBounds(66, 50, 46, 14);
+		lblKHsAmount.setBounds(70, 50, 46, 14);
 		panel.add(lblKHsAmount);
 
 		table = new JTable(1, 1);
@@ -247,8 +254,9 @@ public class MainView {
 		panel.add(btnNewButton);
 		
 		lblThreads = new JLabel("Threads:");
+		lblThreads.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblThreads.setBounds(176, 14, 69, 14);
+		lblThreads.setBounds(176, 14, 67, 14);
 		panel.add(lblThreads);
 		
 		btnLeft = new JButton("");
@@ -279,11 +287,12 @@ public class MainView {
 		panel.add(lblThreadAmount);
 		
 		lblTime = new JLabel("Time:");
+		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblTime.setBounds(10, 70, 46, 14);
 		panel.add(lblTime);
 		
 		lblTimeAmount = new JLabel("00:00:00");
-		lblTimeAmount.setBounds(66, 70, 123, 14);
+		lblTimeAmount.setBounds(70, 70, 123, 14);
 		panel.add(lblTimeAmount);
 		
 		JButton btnFromList = new JButton("From List");
@@ -308,6 +317,15 @@ public class MainView {
 		btnFromList.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnFromList.setBounds(289, 413, 135, 23);
 		panel.add(btnFromList);
+		
+		lblTotalBlc = new JLabel("Total BLC:");
+		lblTotalBlc.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		lblTotalBlc.setBounds(10, 90, 55, 14);
+		panel.add(lblTotalBlc);
+		
+		lblTotalBLC = new JLabel("0");
+		lblTotalBLC.setBounds(70, 90, 123, 14);
+		panel.add(lblTotalBLC);
 		
 		loadData();
 	}
@@ -419,6 +437,10 @@ public class MainView {
 	
 	public static void loadDataPub(){
 		loadData();
+	}
+	
+	public static void setTotalBLC(long tot){
+		lblTotalBLC.setText(Long.toString(tot));
 	}
 	
 	private static void loadData() {

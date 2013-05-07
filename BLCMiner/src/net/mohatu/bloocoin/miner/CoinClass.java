@@ -40,12 +40,12 @@ public class CoinClass implements Runnable {
 		try {
 			String result = new String();
 			Socket sock = new Socket(this.url, this.port);
-			String string = "{\"cmd\":\"my_coins\",\"addr\":\""
+			String command = "{\"cmd\":\"my_coins\",\"addr\":\""
 					+ MainView.getAddr() + "\",\"pwd\":\"" + MainView.getKey()
 					+ "\"}";
 			DataInputStream is = new DataInputStream(sock.getInputStream());
 			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
-			os.write(string.getBytes());
+			os.write(command.getBytes());
 			os.flush();
 
 			BufferedReader in = new BufferedReader(new InputStreamReader(is));
@@ -62,6 +62,41 @@ public class CoinClass implements Runnable {
 			coins = coins.split("}")[0];
 			System.out.println(coins);
 			MainView.updateBLC(Integer.parseInt(coins));
+
+		} catch (MalformedURLException murle) {
+			murle.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		getTotal();
+	}
+	
+	private void getTotal(){
+		try {
+			String result = new String();
+			Socket sock = new Socket(this.url, this.port);
+			String command = "{\"cmd\":\"total_coins\"}";
+			DataInputStream is = new DataInputStream(sock.getInputStream());
+			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
+			os.write(command.getBytes());
+			os.flush();
+
+			BufferedReader in = new BufferedReader(new InputStreamReader(is));
+			String inputLine;
+			while ((inputLine = in.readLine()) != null) {
+				result += inputLine;
+			}
+
+			is.close();
+			os.close();
+			sock.close();
+			System.out.println(result);
+			String[] amount = result.split("\"amount\": ");
+			System.out.println(amount[1]);
+			amount=amount[1].split("}");
+			System.out.println(amount[0]);
+			MainView.setTotalBLC(Long.parseLong(amount[0]));
+			
 
 		} catch (MalformedURLException murle) {
 			murle.printStackTrace();
