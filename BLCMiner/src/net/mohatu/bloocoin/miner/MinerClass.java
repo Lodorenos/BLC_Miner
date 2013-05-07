@@ -68,9 +68,9 @@ public class MinerClass implements Runnable {
 				currentString = startString + counter;
 				hash = DigestUtils.sha512Hex(currentString);
 				if(hash.startsWith(difficulty)){
-					//Thread sub = new Thread(new SubmitterClass(hash,
-							//currentString));
-					//sub.start();
+					Thread sub = new Thread(new SubmitterClass(hash,
+							currentString));
+					sub.start();
 					MainView.updateSolved(currentString);
 					System.out.println("Success: " + currentString);
 					try {
