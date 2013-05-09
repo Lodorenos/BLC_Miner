@@ -81,7 +81,7 @@ public class MainView{
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
 	
-	private static final double VERSION = 2.51;
+	private static final double VERSION = 2.52;
 
 
 	/**
@@ -219,7 +219,7 @@ public class MainView{
 		JButton btnInfo = new JButton("");
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String creatorAddress = "d40d1749657b1c36d24ebda0642c6b5af028c35cc  ";
+				String creatorAddress = "40d1749657b1c36d24ebda0642c6b5af028c35cc  ";
 				JTextArea address = new JTextArea("Donate address: \n"+creatorAddress+"\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner");
 				address.setEditable(false);
 				JOptionPane.showMessageDialog(frmBlcMiner,address
