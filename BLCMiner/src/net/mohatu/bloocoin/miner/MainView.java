@@ -105,6 +105,7 @@ public class MainView{
 	 */
 	public MainView() {
 		System.out.println("Program start time: " + startTime);
+		versionCheck();
 		initialize();
 	}
 
@@ -126,7 +127,7 @@ public class MainView{
 		}
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setResizable(false);
-		frmBlcMiner.setTitle("BLC Client");
+		frmBlcMiner.setTitle("BLC Client v"+VERSION);
 		frmBlcMiner.setBounds(100, 100, 442, 500);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -349,7 +350,7 @@ public class MainView{
 	private static void versionCheck() {
 		try {
 			URL versionURL = new URL(
-					"https://raw.github.com/soflawless/BLC-Wallet/master/vers");
+					"https://raw.github.com/Mohatu/BLC_Miner/master/BLCMiner/version");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					versionURL.openStream()));
 			double version = Double.parseDouble(in.readLine());
@@ -358,7 +359,7 @@ public class MainView{
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"There is a new version available!\nhttps://github.com/soflawless/BLC-Wallet/blob/master/wallet.jar");
+								"There is a new version available!\nhttp://www.mohatu.net/files/miner.jar");
 			}
 
 			in.close();
