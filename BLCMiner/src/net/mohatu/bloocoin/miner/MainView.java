@@ -35,10 +35,13 @@ import javax.swing.JLabel;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
@@ -77,6 +80,8 @@ public class MainView{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
+	
+	private static final double VERSION = 2.51;
 
 
 	/**
@@ -186,11 +191,11 @@ public class MainView{
 		panel.add(lblTriedAmount);
 
 		lblSolvedAmount = new JLabel("0");
-		lblSolvedAmount.setBounds(70, 30, 46, 14);
+		lblSolvedAmount.setBounds(70, 30, 123, 14);
 		panel.add(lblSolvedAmount);
 
 		lblKHsAmount = new JLabel("0.0");
-		lblKHsAmount.setBounds(70, 50, 46, 14);
+		lblKHsAmount.setBounds(70, 50, 123, 14);
 		panel.add(lblKHsAmount);
 
 		table = new JTable(1, 1);
@@ -202,12 +207,12 @@ public class MainView{
 		panel.add(scrollPane);
 		
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 447, 319, 14);
+		lblStatus.setBounds(10, 447, 300, 14);
 		panel.add(lblStatus);
 		
 		lblBLC = new JLabel("BLC: 0");
 		lblBLC.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblBLC.setBounds(335, 447, 91, 14);
+		lblBLC.setBounds(299, 447, 101, 14);
 		panel.add(lblBLC);
 		
 		JButton btnInfo = new JButton("");
@@ -327,7 +332,38 @@ public class MainView{
 		lblTotalBLC.setBounds(70, 90, 123, 14);
 		panel.add(lblTotalBLC);
 		
+		JButton btnRef = new JButton("");
+		btnRef.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Thread refresh = new Thread(new CoinClass());
+				refresh.start();
+			}
+		});
+		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/ref.png")));
+		btnRef.setBounds(400, 443, 23, 23);
+		panel.add(btnRef);
+		
 		loadData();
+	}
+	
+	private static void versionCheck() {
+		try {
+			URL versionURL = new URL(
+					"https://raw.github.com/soflawless/BLC-Wallet/master/vers");
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					versionURL.openStream()));
+			double version = Double.parseDouble(in.readLine());
+
+			if (version > VERSION) {
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"There is a new version available!\nhttps://github.com/soflawless/BLC-Wallet/blob/master/wallet.jar");
+			}
+
+			in.close();
+		} catch (Exception e) {
+		}
 	}
 
 	public static void updateCounter() {

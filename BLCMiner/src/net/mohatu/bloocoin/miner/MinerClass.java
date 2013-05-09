@@ -51,7 +51,7 @@ public class MinerClass implements Runnable {
 			mine();
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("No such algorithm found: SHA-512");
 		}
 	}
 
@@ -80,7 +80,7 @@ public class MinerClass implements Runnable {
 						out.close();
 					} catch (IOException e) {
 						// Error
-						e.printStackTrace();
+						System.out.println("Unable to save to BLC_Solved.txt, check permissions.");
 					}
 				}
 				if (!MainView.getStatus()) {
