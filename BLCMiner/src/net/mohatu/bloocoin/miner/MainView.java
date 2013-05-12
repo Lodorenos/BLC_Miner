@@ -50,6 +50,7 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.JProgressBar;
 
 public class MainView{
 	private static boolean mining = true;
@@ -57,7 +58,7 @@ public class MainView{
 	private JFrame frmBlcMiner;
 	private static String addr = "";
 	private static String key = "";
-	private static final String url = "bloocoin.zapto.org";
+	private static final String url = "server.bloocoin.org";
 	private static final int port = 3122;
 	private static JLabel lblStatus;
 	private static JLabel lblTriedAmount;
@@ -80,8 +81,7 @@ public class MainView{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	
-	private static final double VERSION = 2.52;
+	private static final double VERSION = 2.53;
 
 
 	/**
@@ -343,7 +343,6 @@ public class MainView{
 		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/ref.png")));
 		btnRef.setBounds(400, 443, 23, 23);
 		panel.add(btnRef);
-		
 		loadData();
 	}
 	
