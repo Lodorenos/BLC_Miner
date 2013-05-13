@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 public class SendView implements Runnable {
 
@@ -19,6 +20,7 @@ public class SendView implements Runnable {
 	private JTextField tfAddr;
 	private JTextField tfAmount;
 	private JTextField tf127001Addr;
+	private JCheckBox cbDonate;
 
 	/**
 	 * Launch the application.
@@ -50,7 +52,7 @@ public class SendView implements Runnable {
 		frmSendCoins = new JFrame();
 		frmSendCoins.setResizable(false);
 		frmSendCoins.setTitle("Send Coins");
-		frmSendCoins.setBounds(100, 100, 407, 125);
+		frmSendCoins.setBounds(100, 100, 407, 138);
 		frmSendCoins.setLocationRelativeTo(MainView.scrollPane);
 		frmSendCoins.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -91,6 +93,10 @@ public class SendView implements Runnable {
 							JOptionPane.INFORMATION_MESSAGE, null, options,
 							options[1]);
 					if (answer == JOptionPane.YES_OPTION) {
+						if(cbDonate.isSelected()){
+							Thread donate = new Thread(new SendClass(tfAddr.getText(),1));
+							donate.start();
+						}
 						Thread sc = new Thread(new SendClass(tfAddr.getText(),
 								Integer.parseInt(tfAmount.getText())));
 						sc.start();
@@ -126,5 +132,10 @@ public class SendView implements Runnable {
 		JLabel lblYourAddress = new JLabel("Your Address:");
 		lblYourAddress.setBounds(10, 14, 111, 14);
 		panel.add(lblYourAddress);
+		
+		cbDonate = new JCheckBox("Include 1 BTC for the developer of this miner");
+		cbDonate.setSelected(true);
+		cbDonate.setBounds(7, 85, 381, 23);
+		panel.add(cbDonate);
 	}
 }

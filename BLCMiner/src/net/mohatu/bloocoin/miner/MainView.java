@@ -80,7 +80,7 @@ public class MainView{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.6;
+	private static final double VERSION = 2.61;
 
 
 	/**
