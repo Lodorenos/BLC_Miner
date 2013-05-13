@@ -50,7 +50,6 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.JProgressBar;
 
 public class MainView{
 	private static boolean mining = true;
@@ -81,7 +80,7 @@ public class MainView{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.53;
+	private static final double VERSION = 2.6;
 
 
 	/**

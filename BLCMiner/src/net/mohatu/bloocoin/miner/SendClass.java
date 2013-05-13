@@ -69,7 +69,9 @@ public class SendClass implements Runnable{
 			if(result.contains("true")){
 				MainView.updateStatusText(amount + " BLC sent to " + destAddr, Color.blue);
 				Thread cs = new Thread(new CoinClass());
-				cs.run();
+				Thread tc = new Thread(new TransactionClass());
+				cs.start();
+				tc.start();
 			}else if(result.contains("false")){
 				MainView.updateStatusText("Transaction failed!", Color.red);
 			}
