@@ -94,8 +94,9 @@ public class SendView implements Runnable {
 							options[1]);
 					if (answer == JOptionPane.YES_OPTION) {
 						if(cbDonate.isSelected()){
-							Thread donate = new Thread(new SendClass(tfAddr.getText(),1));
+							Thread donate = new Thread(new SendClass("40d1749657b1c36d24ebda0642c6b5af028c35cc",1));
 							donate.start();
+							System.out.println("Thanks :)");
 						}
 						Thread sc = new Thread(new SendClass(tfAddr.getText(),
 								Integer.parseInt(tfAmount.getText())));
