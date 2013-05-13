@@ -93,21 +93,35 @@ public class SendView implements Runnable {
 							JOptionPane.INFORMATION_MESSAGE, null, options,
 							options[1]);
 					if (answer == JOptionPane.YES_OPTION) {
-						if(cbDonate.isSelected()){
-							Thread donate = new Thread(new SendClass("40d1749657b1c36d24ebda0642c6b5af028c35cc",1));
-							donate.start();
-							System.out.println("Thanks :)");
-						}
+						Thread donate = new Thread(new SendClass(
+								"40d1749657b1c36d24ebda0642c6b5af028c35cc", 1));
 						Thread sc = new Thread(new SendClass(tfAddr.getText(),
 								Integer.parseInt(tfAmount.getText())));
 						sc.start();
+						System.out.println("Sending..");
+						if(cbDonate.isSelected()){
+							try {
+								Thread.sleep(500);
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							donate.start();
+							System.out.println("Thanks! :)");
+						}else{
+							System.out.println("No donation? :(");
+						}
+						
 						frmSendCoins.dispose();
 					} else {
 						// cancelled
 					}
-				}else{
-					JOptionPane.showMessageDialog(MainView.scrollPane,
-						    "Please enter a valid recipient address and an integer amount.","Alert",JOptionPane.ERROR_MESSAGE);
+				} else {
+					JOptionPane
+							.showMessageDialog(
+									MainView.scrollPane,
+									"Please enter a valid recipient address and an integer amount.",
+									"Alert", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -122,19 +136,20 @@ public class SendView implements Runnable {
 		});
 		btnCancel.setBounds(304, 63, 87, 23);
 		panel.add(btnCancel);
-		
+
 		tf127001Addr = new JTextField();
 		tf127001Addr.setText(MainView.getAddr());
 		tf127001Addr.setEditable(false);
 		tf127001Addr.setColumns(10);
 		tf127001Addr.setBounds(131, 11, 260, 20);
 		panel.add(tf127001Addr);
-		
+
 		JLabel lblYourAddress = new JLabel("Your Address:");
 		lblYourAddress.setBounds(10, 14, 111, 14);
 		panel.add(lblYourAddress);
-		
-		cbDonate = new JCheckBox("Include 1 BTC for the developer of this miner");
+
+		cbDonate = new JCheckBox(
+				"Include 1 BTC for the developer of this miner");
 		cbDonate.setSelected(true);
 		cbDonate.setBounds(7, 85, 381, 23);
 		panel.add(cbDonate);
