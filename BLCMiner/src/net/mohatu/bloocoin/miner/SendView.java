@@ -149,7 +149,7 @@ public class SendView implements Runnable {
 		panel.add(lblYourAddress);
 
 		cbDonate = new JCheckBox(
-				"Include 1 BTC for the developer of this miner");
+				"Include 1 BLC for the developer of this miner");
 		cbDonate.setSelected(true);
 		cbDonate.setBounds(7, 85, 381, 23);
 		panel.add(cbDonate);
