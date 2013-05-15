@@ -26,23 +26,13 @@ import java.util.Random;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class MinerClass implements Runnable {
-	private String difficulty = "0000000";
+public final class Miner implements Runnable {
 
-	public MinerClass(int diff) {
+	private String difficulty = "";
 
-		if (diff == 7) {
-			this.difficulty = "0000000";
-		}
-		if (diff == 8) {
-			this.difficulty = "00000000";
-		}
-		if (diff == 9) {
-			this.difficulty = "000000000";
-		}
-		if (diff == 10) {
-			this.difficulty = "0000000000";
-		}
+	public Miner(int diff) {
+		for (int i = 0; i < diff; i++)
+			difficulty += "0";
 	}
 
 	@Override
@@ -50,40 +40,43 @@ public class MinerClass implements Runnable {
 		try {
 			mine();
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
 			System.out.println("No such algorithm found: SHA-512");
 		}
 	}
 
 	public void mine() throws NoSuchAlgorithmException {
-
-		String currentString;
-		//String testString = "dx3NAa"; //dx3NAa257363
-		while (MainView.getStatus()) {
+		// String testString = "dx3NAa"; //dx3NAa257363
+		while (Main.getStatus()) {
 			String startString = randomString();
-			String hash = "";
 			System.out.println("Starting: " + startString);
+
+			// Any reason for this 'magic' number? (10000000)
 			for (int counter = 0; counter <= 10000000; counter++) {
-				MainView.updateCounter();
-				currentString = startString + counter;
-				hash = DigestUtils.sha512Hex(currentString);
-				if(hash.startsWith(difficulty)){
-					Thread sub = new Thread(new SubmitterClass(hash,
-							currentString));
-					sub.start();
-					MainView.updateSolved(currentString);
+				Main.updateCounter();
+				String currentString = startString + counter;
+				String hash = DigestUtils.sha512Hex(currentString);
+
+				if (hash.startsWith(difficulty)) {
+					new Thread(new Submitter(hash, currentString)).start();
+
+					Main.updateSolved(currentString);
 					System.out.println("Success: " + currentString);
+
 					try {
 						PrintWriter out = new PrintWriter(new BufferedWriter(
-								new FileWriter(System.getProperty("user.dir") + "/BLC_Solved.txt", true)));
+								new FileWriter(System.getProperty("user.dir")
+										+ "/BLC_Solved.txt", true)));
 						out.println(currentString);
 						out.close();
 					} catch (IOException e) {
 						// Error
-						System.out.println("Unable to save to BLC_Solved.txt, check permissions.");
+						System.out
+								.println("Unable to save to BLC_Solved.txt, check permissions.");
 					}
+
 				}
-				if (!MainView.getStatus()) {
+
+				if (!Main.getStatus()) {
 					counter = 10000000;
 					System.out.println("STOPPING");
 				}

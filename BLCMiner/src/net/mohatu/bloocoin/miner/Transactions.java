@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
 
-public class TransactionClass implements Runnable{
+public class Transactions implements Runnable{
 
 	@Override
 	public void run() {
@@ -20,10 +20,10 @@ public class TransactionClass implements Runnable{
 	public void loadTransactions() {
 		try {
 			String result = new String();
-			Socket socket = new Socket(MainView.getURL(), MainView.getPort());
+			Socket socket = new Socket(Main.getURL(), Main.getPort());
 			String string = "{\"cmd\":\"" + "transactions"
-					+ "\",\"addr\":\"" + MainView.getAddr() + "\",\"pwd\":\""
-					+ MainView.getKey() + "\"}";
+					+ "\",\"addr\":\"" + Main.getAddr() + "\",\"pwd\":\""
+					+ Main.getKey() + "\"}";
 			DataInputStream is = new DataInputStream(socket.getInputStream());
 			DataOutputStream os = new DataOutputStream(socket.getOutputStream());
 			os.write(string.getBytes());
@@ -36,17 +36,17 @@ public class TransactionClass implements Runnable{
 			}
 			
 			String[] transactions = result.split("\\{\\\"to\\\"\\: ");
-			MainView.clearDFM();
+			Main.clearDFM();
 			for(int i=1;i<transactions.length;i++){
 				transactions[i] = transactions[i].replace("\"", "");
 				System.out.println(transactions[i]);
-				MainView.addTransaction(transactions[i]);
+				Main.addTransaction(transactions[i]);
 			}
 
 			is.close();
 			os.close();
 			socket.close();
-			MainView.updateStatusText("Transactions updated",Color.blue);
+			Main.updateStatusText("Transactions updated",Color.blue);
 			//System.out.println(result);
 
 		} catch (MalformedURLException murle) {

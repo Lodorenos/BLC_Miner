@@ -51,7 +51,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class MainView{
+public class Main{
 	private static boolean mining = true;
 	private static long counter = 0;
 	private JFrame frmBlcMiner;
@@ -90,7 +90,7 @@ public class MainView{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainView window = new MainView();
+					Main window = new Main();
 					window.frmBlcMiner.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -102,7 +102,7 @@ public class MainView{
 	/**
 	 * Create the application.
 	 */
-	public MainView() {
+	public Main() {
 		System.out.println("Program start time: " + startTime);
 		versionCheck();
 		initialize();
@@ -145,7 +145,7 @@ public class MainView{
 				btnRight.setEnabled(false);
 				//Start mining
 				Thread miner = new Thread(new MinerHandler());
-				Thread khs = new Thread(new KhsClass());
+				Thread khs = new Thread(new KhsUpdate());
 				miner.start();
 				khs.start();
 				mining = true;
@@ -306,13 +306,13 @@ public class MainView{
 				//Send list to server
 				Object[] options = { "Yes", "No" };
 				int answer = JOptionPane.showOptionDialog(
-						MainView.scrollPane,
+						Main.scrollPane,
 						"This will send ALL solutions to\nthe server, and may take a while.\n\nContinue?","Send All?",
 						JOptionPane.YES_NO_OPTION,
 						JOptionPane.INFORMATION_MESSAGE, null, options,
 						options[1]);
 				if (answer == JOptionPane.YES_OPTION) {
-					Thread slc = new Thread(new SubmitListClass());
+					Thread slc = new Thread(new SubmitList());
 					slc.start();
 				} else {
 					// cancelled
@@ -335,7 +335,7 @@ public class MainView{
 		JButton btnRef = new JButton("");
 		btnRef.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Thread refresh = new Thread(new CoinClass());
+				Thread refresh = new Thread(new Coins());
 				refresh.start();
 			}
 		});
@@ -433,13 +433,13 @@ public class MainView{
 	}
 	
 	private static void getCoins(){
-		Thread gc = new Thread(new CoinClass());
+		Thread gc = new Thread(new Coins());
 		gc.start();
 	}
 	
 	private static void getTransactions(){
 		clearDFM();
-		Thread gt = new Thread(new TransactionClass());
+		Thread gt = new Thread(new Transactions());
 		gt.start();
 	}
 	
@@ -489,7 +489,7 @@ public class MainView{
 			addr = data.split(":")[0];
 			key = data.split(":")[1];
 			stream.close();
-			MainView.updateStatusText("Bloostamp data loaded successfully",Color.black);
+			Main.updateStatusText("Bloostamp data loaded successfully",Color.black);
 			System.out.println("Bloostamp data loaded.");
 			System.out.println("Getting transactions.");
 			getTransactions();
@@ -497,24 +497,24 @@ public class MainView{
 			getCoins();
 			setThreads((Runtime.getRuntime().availableProcessors()/2)+1);
 		} catch (FileNotFoundException fnfe) {
-			MainView.updateStatusText("Could not find the bloostamp file!",Color.red);
+			Main.updateStatusText("Could not find the bloostamp file!",Color.red);
 			System.out.println("Unable to find the bloostamp file");
 			
 			Object[] options = { "Yes", "No" };
 			int answer = JOptionPane.showOptionDialog(
-					MainView.scrollPane,
+					Main.scrollPane,
 					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)", "New Registration",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE, null, options,
 					options[1]);
 			if (answer == JOptionPane.YES_OPTION) {
-				Thread rc = new Thread(new RegisterClass());
+				Thread rc = new Thread(new Register());
 				rc.start();
 			} else {
 				System.exit(0);
 			}
 		} catch (IOException ioe) {
-			MainView.updateStatusText("IOException",Color.red);
+			Main.updateStatusText("IOException",Color.red);
 			System.out.println("IOException.");
 			ioe.printStackTrace();
 		}

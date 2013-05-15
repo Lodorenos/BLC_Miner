@@ -25,10 +25,10 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
 
-public class CoinClass implements Runnable {
+public class Coins implements Runnable {
 
-	String url = MainView.getURL();
-	int port = MainView.getPort();
+	String url = Main.getURL();
+	int port = Main.getPort();
 
 	@Override
 	public void run() {
@@ -41,7 +41,7 @@ public class CoinClass implements Runnable {
 			String result = new String();
 			Socket sock = new Socket(this.url, this.port);
 			String command = "{\"cmd\":\"my_coins\",\"addr\":\""
-					+ MainView.getAddr() + "\",\"pwd\":\"" + MainView.getKey()
+					+ Main.getAddr() + "\",\"pwd\":\"" + Main.getKey()
 					+ "\"}";
 			DataInputStream is = new DataInputStream(sock.getInputStream());
 			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
@@ -61,7 +61,7 @@ public class CoinClass implements Runnable {
 			String coins = result.split("t\": ")[1];
 			coins = coins.split("}")[0];
 			System.out.println(coins);
-			MainView.updateBLC(Integer.parseInt(coins));
+			Main.updateBLC(Integer.parseInt(coins));
 
 		} catch (MalformedURLException murle) {
 			murle.printStackTrace();
@@ -95,7 +95,7 @@ public class CoinClass implements Runnable {
 			System.out.println(amount[1]);
 			amount=amount[1].split("}");
 			System.out.println(amount[0]);
-			MainView.setTotalBLC(Long.parseLong(amount[0]));
+			Main.setTotalBLC(Long.parseLong(amount[0]));
 			
 
 		} catch (MalformedURLException murle) {

@@ -20,8 +20,8 @@ package net.mohatu.bloocoin.miner;
 public class MinerHandler implements Runnable {
 	@Override
 	public void run() {
-		for (int i = 0; i < MainView.getThreads(); i++) {
-			Thread miner = new Thread(new MinerClass(7));
+		for (int i = 0; i < Main.getThreads(); i++) {
+			Thread miner = new Thread(new Miner(8));
 			miner.start();
 			System.out.println("Thread "+(i+1)+" started.");
 		}

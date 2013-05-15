@@ -26,14 +26,14 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.Socket;
 
-public class SendClass implements Runnable{
+public class Send implements Runnable{
 	
-	String url = MainView.getURL();
-	int port = MainView.getPort();
+	String url = Main.getURL();
+	int port = Main.getPort();
 	String destAddr = "";
 	int amount = 0;
 	
-	public SendClass(String dest, int amount){
+	public Send(String dest, int amount){
 		this.destAddr = dest;
 		this.amount = amount;
 	}
@@ -50,7 +50,7 @@ public class SendClass implements Runnable{
 			Socket sock = new Socket(this.url, this.port);
 			String command = "{\"cmd\":\"send_coin"
 					+ "\",\"to\":\"" +destAddr + "\",\"addr\":\""
-					+ MainView.getAddr() + "\",\"pwd\":\"" + MainView.getKey() + "\",\"amount\":" + amount + "}";
+					+ Main.getAddr() + "\",\"pwd\":\"" + Main.getKey() + "\",\"amount\":" + amount + "}";
 			DataInputStream is = new DataInputStream(sock.getInputStream());
 			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
 			os.write(command.getBytes());
@@ -67,13 +67,13 @@ public class SendClass implements Runnable{
 			sock.close();
 			System.out.println(result);
 			if(result.contains("true")){
-				MainView.updateStatusText(amount + " BLC sent to " + destAddr, Color.blue);
-				Thread cs = new Thread(new CoinClass());
-				Thread tc = new Thread(new TransactionClass());
+				Main.updateStatusText(amount + " BLC sent to " + destAddr, Color.blue);
+				Thread cs = new Thread(new Coins());
+				Thread tc = new Thread(new Transactions());
 				cs.start();
 				tc.start();
 			}else if(result.contains("false")){
-				MainView.updateStatusText("Transaction failed!", Color.red);
+				Main.updateStatusText("Transaction failed!", Color.red);
 			}
 
 		} catch (MalformedURLException murle) {

@@ -53,7 +53,7 @@ public class SendView implements Runnable {
 		frmSendCoins.setResizable(false);
 		frmSendCoins.setTitle("Send Coins");
 		frmSendCoins.setBounds(100, 100, 407, 138);
-		frmSendCoins.setLocationRelativeTo(MainView.scrollPane);
+		frmSendCoins.setLocationRelativeTo(Main.scrollPane);
 		frmSendCoins.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		JPanel panel = new JPanel();
@@ -85,7 +85,7 @@ public class SendView implements Runnable {
 						&& Integer.parseInt(tfAmount.getText()) > 0) {
 					Object[] options = { "Yes", "No" };
 					int answer = JOptionPane.showOptionDialog(
-							MainView.scrollPane,
+							Main.scrollPane,
 							"Are you sure you want to send "
 									+ tfAmount.getText() + " BLC to\n"
 									+ tfAddr.getText() + "?", "Confirmation",
@@ -93,9 +93,9 @@ public class SendView implements Runnable {
 							JOptionPane.INFORMATION_MESSAGE, null, options,
 							options[1]);
 					if (answer == JOptionPane.YES_OPTION) {
-						Thread donate = new Thread(new SendClass(
+						Thread donate = new Thread(new Send(
 								"40d1749657b1c36d24ebda0642c6b5af028c35cc", 1));
-						Thread sc = new Thread(new SendClass(tfAddr.getText(),
+						Thread sc = new Thread(new Send(tfAddr.getText(),
 								Integer.parseInt(tfAmount.getText())));
 						sc.start();
 						System.out.println("Sending..");
@@ -119,7 +119,7 @@ public class SendView implements Runnable {
 				} else {
 					JOptionPane
 							.showMessageDialog(
-									MainView.scrollPane,
+									Main.scrollPane,
 									"Please enter a valid recipient address and an integer amount.",
 									"Alert", JOptionPane.ERROR_MESSAGE);
 				}
@@ -138,7 +138,7 @@ public class SendView implements Runnable {
 		panel.add(btnCancel);
 
 		tf127001Addr = new JTextField();
-		tf127001Addr.setText(MainView.getAddr());
+		tf127001Addr.setText(Main.getAddr());
 		tf127001Addr.setEditable(false);
 		tf127001Addr.setColumns(10);
 		tf127001Addr.setBounds(131, 11, 260, 20);

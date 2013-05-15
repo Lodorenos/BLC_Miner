@@ -22,55 +22,49 @@
 
 package net.mohatu.bloocoin.miner;
 
-import java.awt.Color;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Random;
 
-public class SubmitterClass implements Runnable {
+import javax.swing.JOptionPane;
 
-	String hash = "";
-	String solution = "";
-	String url = MainView.getURL();
-	int port = MainView.getPort();
+import org.apache.commons.codec.digest.DigestUtils;
+
+public class Register implements Runnable {
+
+	String url = Main.getURL();
+	int port = Main.getPort();
 	String addr = "";
 	String key = "";
 	boolean submitted = false;
 
-	public SubmitterClass(String hash, String solution) {
-		this.hash = hash;
-		this.solution = solution;
-	}
-
 	@Override
 	public void run() {
-
-		while (!submitted) {
-			boolean sawException = false;
-			try {
-				MainView.updateStatusText("Submitting " + solution, Color.blue);
-				submit();
-				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				sawException = true;
-			}
-			if (sawException) {
-				Thread.currentThread().interrupt();
-			}
-		}
+		genData();
+		register();
+	}
+	
+	private void genData(){
+		Random r= new Random(),w = new Random();
+		addr = DigestUtils.sha1Hex((randomString()+r.nextInt(Integer.MAX_VALUE)).toString()).toString();
+		key = DigestUtils.sha1Hex((randomString()+w.nextInt(Integer.MAX_VALUE)).toString()).toString();
+		System.out.println("Addr: " + addr + "\nKey: "+key);
 	}
 
-	private void submit() {
+	private void register() {
 		try {
 			String result = new String();
 			Socket sock = new Socket(this.url, this.port);
-			String command = "{\"cmd\":\"check" + "\",\"winning_string\":\""
-					+ solution + "\",\"winning_hash\":\"" + hash
-					+ "\",\"addr\":\"" + MainView.getAddr() + "\"}";
+			String command = "{\"cmd\":\"register" + "\",\"addr\":\"" + addr
+					+ "\",\"pwd\":\"" + key + "\"}";
 			DataInputStream is = new DataInputStream(sock.getInputStream());
 			DataOutputStream os = new DataOutputStream(sock.getOutputStream());
 			os.write(command.getBytes());
@@ -85,26 +79,46 @@ public class SubmitterClass implements Runnable {
 			is.close();
 			os.close();
 			sock.close();
+			System.out.println(result);
 			if (result.contains("\"success\": true")) {
-				System.out.println("Result: Submitted");
-				submitted = true;
-				MainView.updateStatusText(solution + " submitted", Color.blue);
+				System.out.println("Registration successful: "+addr);
+				saveBloostamp();
 			} else if (result.contains("\"success\": false")) {
 				System.out.println("Result: Failed");
-				submitted = true;
-				MainView.updateStatusText("Submission of " + solution
-						+ " failed, already exists!", Color.red);
+				JOptionPane.showMessageDialog(Main.scrollPane,
+					    "Registration failed.\nCheck your network connection","Registration Failed",JOptionPane.ERROR_MESSAGE);
+				System.exit(0);
 			}
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
-			MainView.updateStatusText("Submission of " + solution
-					+ " failed, connection failed!", Color.red);
 		} catch (IOException e) {
 			e.printStackTrace();
-			MainView.updateStatusText("Submission of " + solution
-					+ " failed, connection failed!", Color.red);
 		}
-		Thread gc = new Thread(new CoinClass());
-		gc.start();
+	}
+	
+	private String randomString() {
+		String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+		Random r = new Random();
+		int limit = 5;
+		StringBuffer buf = new StringBuffer();
+
+		buf.append(chars.charAt(r.nextInt(26)));
+		for (int i = 0; i < limit; i++) {
+			buf.append(chars.charAt(r.nextInt(chars.length())));
+		}
+		return buf.toString();
+	}
+	
+	private void saveBloostamp(){
+		try{
+		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("bloostamp")));
+		out.print(addr+":"+key);
+		out.close();
+		Main.loadDataPub();
+
+		}catch(IOException e){
+			System.out.println("Saving failed:");
+			e.printStackTrace();
+		}
 	}
 }

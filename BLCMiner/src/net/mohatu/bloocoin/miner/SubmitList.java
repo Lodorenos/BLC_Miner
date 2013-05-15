@@ -38,11 +38,11 @@ import java.util.ArrayList;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class SubmitListClass implements Runnable {
+public class SubmitList implements Runnable {
 	String hash = "";
 	String solution = "";
-	String url = MainView.getURL();
-	int port = MainView.getPort();
+	String url = Main.getURL();
+	int port = Main.getPort();
 	ArrayList<String> solved = new ArrayList<String>();
 
 	@Override
@@ -86,7 +86,7 @@ public class SubmitListClass implements Runnable {
 				String command = "{\"cmd\":\"check"
 						+ "\",\"winning_string\":\"" + solution
 						+ "\",\"winning_hash\":\"" + hash + "\",\"addr\":\""
-						+ MainView.getAddr() + "\"}";
+						+ Main.getAddr() + "\"}";
 				os = new DataOutputStream(sock.getOutputStream());
 				os.write(command.getBytes());
 
@@ -97,13 +97,13 @@ public class SubmitListClass implements Runnable {
 
 				if (result.contains("\"success\": true")) {
 					System.out.println("Result: Submitted");
-					MainView.updateStatusText(solution + " submitted",
+					Main.updateStatusText(solution + " submitted",
 							Color.blue);
-					Thread gc = new Thread(new CoinClass());
+					Thread gc = new Thread(new Coins());
 					gc.start();
 				} else if (result.contains("\"success\": false")) {
 					System.out.println("Result: Failed");
-					MainView.updateStatusText("Submission of " + solution
+					Main.updateStatusText("Submission of " + solution
 							+ " failed, already exists!", Color.red);
 				}
 				is.close();
@@ -112,15 +112,15 @@ public class SubmitListClass implements Runnable {
 				sock.close();
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
-				MainView.updateStatusText("Submission of " + solution
+				Main.updateStatusText("Submission of " + solution
 						+ " failed, connection failed!", Color.red);
 			} catch (IOException e) {
 				e.printStackTrace();
-				MainView.updateStatusText("Submission of " + solution
+				Main.updateStatusText("Submission of " + solution
 						+ " failed, connection failed!", Color.red);
 			}
 		}
-		Thread gc = new Thread(new CoinClass());
+		Thread gc = new Thread(new Coins());
 		gc.start();
 	}
 }
