@@ -50,7 +50,6 @@ public final class Miner implements Runnable {
 			String startString = randomString();
 			System.out.println("Starting: " + startString);
 
-			// Any reason for this 'magic' number? (10000000)
 			for (int counter = 0; counter <= 10000000; counter++) {
 				Main.updateCounter();
 				String currentString = startString + counter;
@@ -64,8 +63,8 @@ public final class Miner implements Runnable {
 
 					try {
 						PrintWriter out = new PrintWriter(new BufferedWriter(
-								new FileWriter(System.getProperty("user.dir")
-										+ "/BLC_Solved.txt", true)));
+								new FileWriter(System.getProperty("user.home")
+										+ "/.bloocoin/solved.dat", true)));
 						out.println(currentString);
 						out.close();
 					} catch (IOException e) {
@@ -90,7 +89,7 @@ public final class Miner implements Runnable {
 		int limit = 5;
 		StringBuffer buf = new StringBuffer();
 
-		buf.append(chars.charAt(r.nextInt(26)));
+		buf.append(chars.charAt(r.nextInt(chars.length())));
 		for (int i = 0; i < limit; i++) {
 			buf.append(chars.charAt(r.nextInt(chars.length())));
 		}

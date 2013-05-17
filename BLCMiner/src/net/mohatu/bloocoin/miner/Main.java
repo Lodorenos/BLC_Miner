@@ -80,7 +80,7 @@ public class Main{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.7;
+	private static final double VERSION = 2.75;
 
 
 	/**
@@ -225,7 +225,7 @@ public class Main{
 					    ,"Info",JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/qm.png")));
+		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/qm.png")));
 		btnInfo.setBounds(391, 5, 33, 35);
 		panel.add(btnInfo);
 		
@@ -272,7 +272,7 @@ public class Main{
 				}
 			}
 		});
-		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/left.png")));
+		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/left.png")));
 		btnLeft.setBounds(245, 10, 39, 23);
 		panel.add(btnLeft);
 		
@@ -282,7 +282,7 @@ public class Main{
 				setThreads(getThreads()+1);
 			}
 		});
-		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/right.png")));
+		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/right.png")));
 		btnRight.setBounds(340, 10, 39, 23);
 		panel.add(btnRight);
 		
@@ -339,7 +339,7 @@ public class Main{
 				refresh.start();
 			}
 		});
-		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/miner/ref.png")));
+		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/ref.png")));
 		btnRef.setBounds(400, 443, 23, 23);
 		panel.add(btnRef);
 		loadData();
@@ -481,7 +481,8 @@ public class Main{
 	private static void loadData() {
 		try {
 			FileInputStream stream = new FileInputStream(new File(
-					"bloostamp"));
+					System.getProperty("user.home")
+					+ "/.bloocoin/bloostamp"));
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
 					fc.size());

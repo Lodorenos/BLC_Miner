@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,12 +52,16 @@ public class Register implements Runnable {
 		genData();
 		register();
 	}
-	
-	private void genData(){
-		Random r= new Random(),w = new Random();
-		addr = DigestUtils.sha1Hex((randomString()+r.nextInt(Integer.MAX_VALUE)).toString()).toString();
-		key = DigestUtils.sha1Hex((randomString()+w.nextInt(Integer.MAX_VALUE)).toString()).toString();
-		System.out.println("Addr: " + addr + "\nKey: "+key);
+
+	private void genData() {
+		Random r = new Random(), w = new Random();
+		addr = DigestUtils.sha1Hex(
+				(randomString() + r.nextInt(Integer.MAX_VALUE)).toString())
+				.toString();
+		key = DigestUtils.sha1Hex(
+				(randomString() + w.nextInt(Integer.MAX_VALUE)).toString())
+				.toString();
+		System.out.println("Addr: " + addr + "\nKey: " + key);
 	}
 
 	private void register() {
@@ -81,12 +86,13 @@ public class Register implements Runnable {
 			sock.close();
 			System.out.println(result);
 			if (result.contains("\"success\": true")) {
-				System.out.println("Registration successful: "+addr);
+				System.out.println("Registration successful: " + addr);
 				saveBloostamp();
 			} else if (result.contains("\"success\": false")) {
 				System.out.println("Result: Failed");
 				JOptionPane.showMessageDialog(Main.scrollPane,
-					    "Registration failed.\nCheck your network connection","Registration Failed",JOptionPane.ERROR_MESSAGE);
+						"Registration failed.\nCheck your network connection",
+						"Registration Failed", JOptionPane.ERROR_MESSAGE);
 				System.exit(0);
 			}
 		} catch (UnknownHostException e) {
@@ -95,7 +101,7 @@ public class Register implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private String randomString() {
 		String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 		Random r = new Random();
@@ -108,15 +114,28 @@ public class Register implements Runnable {
 		}
 		return buf.toString();
 	}
-	
-	private void saveBloostamp(){
-		try{
-		PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("bloostamp")));
-		out.print(addr+":"+key);
-		out.close();
-		Main.loadDataPub();
 
-		}catch(IOException e){
+	private void saveBloostamp() {
+		File bloocoinFolder = new File(System.getProperty("user.home")
+				+ "/.bloocoin");
+		if (!bloocoinFolder.exists()) {
+			System.out.println("Creating " + System.getProperty("user.home")
+					+ "/.bloocoin" + " directory");
+			boolean result = bloocoinFolder.mkdir();
+			if (result) {
+				System.out.println("bloocoin folder created");
+			}
+		}
+		try {
+			PrintWriter out = new PrintWriter(new BufferedWriter(
+					new FileWriter(System.getProperty("user.home")
+							+ "/.bloocoin/bloostamp")));
+			out.print(addr + ":" + key);
+			out.close();
+			Main.loadDataPub();
+			
+
+		} catch (IOException e) {
 			System.out.println("Saving failed:");
 			e.printStackTrace();
 		}

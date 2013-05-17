@@ -51,7 +51,9 @@ public class SubmitList implements Runnable {
 		BufferedReader br;
 		String line;
 		try {
-			is = new FileInputStream("BLC_Solved.txt");
+			is = new FileInputStream(
+					System.getProperty("user.home")
+					+ "/.bloocoin/solved.dat");
 			br = new BufferedReader(new InputStreamReader(is,
 					Charset.forName("UTF-8")));
 			while ((line = br.readLine()) != null) {
