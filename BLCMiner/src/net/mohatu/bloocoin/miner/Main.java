@@ -405,7 +405,7 @@ public class Main{
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"There is a new version available!\nhttp://www.mohatu.net/miner");
+								"There is a new version available! (" + version + ")\nhttp://www.mohatu.net/miner");
 			}
 
 			in.close();
@@ -552,7 +552,7 @@ public class Main{
 			Object[] options = { "Yes", "No" };
 			int answer = JOptionPane.showOptionDialog(
 					Main.scrollPane,
-					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)\nMOVE YOUR CURRENT BLOOSTAMP FILE\nTO user.home/.bloocoin TO FIX\nTHIS ERROR IF YOU ALREADY\nHAVE ONE!", "New Registration",
+					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)", "New Registration",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE, null, options,
 					options[1]);
