@@ -80,7 +80,7 @@ public class Main{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.75;
+	private static final double VERSION = 2.76;
 
 
 	/**
@@ -357,7 +357,7 @@ public class Main{
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"There is a new version available!\nhttp://www.mohatu.net/files/miner.jar");
+								"There is a new version available!\nhttp://www.mohatu.net/miner");
 			}
 
 			in.close();
@@ -504,7 +504,7 @@ public class Main{
 			Object[] options = { "Yes", "No" };
 			int answer = JOptionPane.showOptionDialog(
 					Main.scrollPane,
-					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)", "New Registration",
+					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)\nMOVE YOUR CURRENT BLOOSTAMP FILE\nTO user.home/.bloocoin TO FIX\nTHIS ERROR IF YOU ALREADY\nHAVE ONE!", "New Registration",
 					JOptionPane.YES_NO_OPTION,
 					JOptionPane.INFORMATION_MESSAGE, null, options,
 					options[1]);
