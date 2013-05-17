@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -80,7 +81,7 @@ public class Main{
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.76;
+	private static final double VERSION = 2.8;
 
 
 	/**
@@ -261,7 +262,7 @@ public class Main{
 		lblThreads = new JLabel("Threads:");
 		lblThreads.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblThreads.setBounds(176, 14, 67, 14);
+		lblThreads.setBounds(176, 14, 65, 14);
 		panel.add(lblThreads);
 		
 		btnLeft = new JButton("");
@@ -320,7 +321,7 @@ public class Main{
 			}
 		});
 		btnFromList.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnFromList.setBounds(289, 413, 135, 23);
+		btnFromList.setBounds(289, 413, 108, 23);
 		panel.add(btnFromList);
 		
 		lblTotalBlc = new JLabel("Total BLC:");
@@ -342,6 +343,53 @@ public class Main{
 		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/ref.png")));
 		btnRef.setBounds(400, 443, 23, 23);
 		panel.add(btnRef);
+		
+		JButton btnImport = new JButton("");
+		btnImport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Object[] options = { "Yes", "No" };
+				int answer = JOptionPane.showOptionDialog(
+						Main.scrollPane,
+						"Import custom bloostamp file?", "Import",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options,
+						options[1]);
+				if (answer == JOptionPane.YES_OPTION) {
+					//Import custom bloostamp
+					JFileChooser chooser = new JFileChooser();
+					chooser.setCurrentDirectory(new File(System.getProperty("user.home")
+					+ "/.bloocoin/"));
+				    int returnVal = chooser.showOpenDialog(scrollPane);
+				    if(returnVal == JFileChooser.APPROVE_OPTION) {
+				    	try {
+							FileInputStream stream = new FileInputStream(chooser.getSelectedFile());
+							FileChannel fc = stream.getChannel();
+							MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
+									fc.size());
+							String data = (Charset.defaultCharset().decode(bb).toString());
+							addr = data.split(":")[0];
+							key = data.split(":")[1];
+							stream.close();
+						} catch (FileNotFoundException e) {
+							updateStatusText(chooser.getSelectedFile().getName() + " not found!",Color.red);
+							e.printStackTrace();
+						} catch (IOException e) {
+							updateStatusText("IO Exception: " + chooser.getSelectedFile().getName(),Color.red);
+							e.printStackTrace();
+						}
+				    	Main.updateStatusText("Bloostamp data loaded successfully",Color.black);
+						System.out.println("Custom loostamp data loaded.");
+						System.out.println("Getting new transactions.");
+						getTransactions();
+						System.out.println("Getting new coin count.");
+						getCoins();
+				    }
+				}
+			}
+		});
+		btnImport.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/imp.png")));
+		btnImport.setBounds(400, 413, 23, 23);
+		panel.add(btnImport);
 		loadData();
 	}
 	

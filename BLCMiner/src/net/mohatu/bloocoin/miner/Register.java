@@ -115,7 +115,7 @@ public class Register implements Runnable {
 		return buf.toString();
 	}
 
-	private void saveBloostamp() {
+	private void saveBloostamp() { 
 		File bloocoinFolder = new File(System.getProperty("user.home")
 				+ "/.bloocoin");
 		if (!bloocoinFolder.exists()) {
