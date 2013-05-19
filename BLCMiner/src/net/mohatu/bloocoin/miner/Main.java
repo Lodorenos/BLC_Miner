@@ -80,7 +80,7 @@ public class Main {
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.9;
+	private static final double VERSION = 3.0;
 
 	/**
 	 * Launch the application.
