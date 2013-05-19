@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -51,8 +52,10 @@ import java.nio.charset.Charset;
 
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DefaultFormatter;
 import javax.swing.SwingConstants;
 import java.awt.Font;
+import javax.swing.JSpinner;
 
 public class Main {
 	private static boolean mining = true;
@@ -62,15 +65,16 @@ public class Main {
 	private static final String url = "server.bloocoin.org";
 	private static final int port = 3122;
 	private static JLabel lblStatus, lblTriedAmount, lblSolvedAmount,
-			lblKHsAmount, lblThreads, lblThreadAmount;
+			lblKHsAmount, lblThreads;
 	private static JTable table;
-	private static JButton btnStartMining, btnLeft, btnRight;
+	private static JButton btnStartMining;
 	public static JScrollPane scrollPane;
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0),
 			transactions = new DefaultTableModel(new Object[] { "To:", "From:",
 					"Amount:" }, 0);
 	private static JLabel lblBLC;
+	private static JSpinner spinner;
 	private static long startTime = System.nanoTime();
 	private JLabel lblTime;
 	private static JLabel lblTimeAmount;
@@ -135,8 +139,6 @@ public class Main {
 				startTime = System.nanoTime();
 				// disable start button
 				btnStartMining.setEnabled(false);
-				btnLeft.setEnabled(false);
-				btnRight.setEnabled(false);
 				// Start mining
 				Thread miner = new Thread(new MinerHandler());
 				Thread khs = new Thread(new KhsUpdate());
@@ -157,8 +159,6 @@ public class Main {
 				mining = false;
 				// enable start button
 				btnStartMining.setEnabled(true);
-				btnRight.setEnabled(true);
-				btnLeft.setEnabled(true);
 				updateStatusText("Mining stopped", Color.red);
 			}
 		});
@@ -201,12 +201,12 @@ public class Main {
 		panel.add(scrollPane);
 
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 447, 279, 14);
+		lblStatus.setBounds(10, 447, 330, 14);
 		panel.add(lblStatus);
 
 		lblBLC = new JLabel("BLC: 0");
 		lblBLC.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblBLC.setBounds(290, 447, 74, 14);
+		lblBLC.setBounds(350, 447, 74, 14);
 		panel.add(lblBLC);
 
 		JButton btnInfo = new JButton("");
@@ -259,37 +259,8 @@ public class Main {
 		lblThreads = new JLabel("Threads:");
 		lblThreads.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblThreads.setBounds(176, 14, 65, 14);
+		lblThreads.setBounds(290, 15, 46, 14);
 		panel.add(lblThreads);
-
-		btnLeft = new JButton("");
-		btnLeft.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (getThreads() > 1) {
-					setThreads(getThreads() - 1);
-				}
-			}
-		});
-		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
-				"net/mohatu/bloocoin/assets/left.png")));
-		btnLeft.setBounds(245, 10, 39, 23);
-		panel.add(btnLeft);
-
-		btnRight = new JButton("");
-		btnRight.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				setThreads(getThreads() + 1);
-			}
-		});
-		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
-				"net/mohatu/bloocoin/assets/right.png")));
-		btnRight.setBounds(340, 10, 39, 23);
-		panel.add(btnRight);
-
-		lblThreadAmount = new JLabel("0");
-		lblThreadAmount.setHorizontalAlignment(SwingConstants.CENTER);
-		lblThreadAmount.setBounds(290, 14, 40, 14);
-		panel.add(lblThreadAmount);
 
 		lblTime = new JLabel("Time:");
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 9));
@@ -321,7 +292,7 @@ public class Main {
 			}
 		});
 		btnFromList.setFont(new Font("Tahoma", Font.PLAIN, 9));
-		btnFromList.setBounds(289, 413, 108, 23);
+		btnFromList.setBounds(289, 413, 135, 23);
 		panel.add(btnFromList);
 
 		lblTotalBlc = new JLabel("Total BLC:");
@@ -342,7 +313,7 @@ public class Main {
 		});
 		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
 				"net/mohatu/bloocoin/assets/ref.png")));
-		btnRef.setBounds(373, 443, 23, 23);
+		btnRef.setBounds(265, 10, 23, 23);
 		panel.add(btnRef);
 
 		JButton btnImport = new JButton("");
@@ -397,7 +368,7 @@ public class Main {
 		});
 		btnImport.setIcon(new ImageIcon(getClass().getClassLoader()
 				.getResource("net/mohatu/bloocoin/assets/imp.png")));
-		btnImport.setBounds(400, 413, 23, 23);
+		btnImport.setBounds(199, 10, 23, 23);
 		panel.add(btnImport);
 
 		JButton btnNew = new JButton("");
@@ -443,8 +414,16 @@ public class Main {
 		});
 		btnNew.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
 				"net/mohatu/bloocoin/assets/new.png")));
-		btnNew.setBounds(401, 443, 23, 23);
+		btnNew.setBounds(232, 10, 23, 23);
 		panel.add(btnNew);
+		
+		//Jspinner, RedPois0n's idea.
+		spinner = new JSpinner(new SpinnerNumberModel(1, 1, 1000, 1));
+		JSpinner.NumberEditor jsEditor = (JSpinner.NumberEditor)spinner.getEditor();
+		DefaultFormatter formatter = (DefaultFormatter) jsEditor.getTextField().getFormatter();
+		formatter.setAllowsInvalid(false);
+		spinner.setBounds(341, 12, 40, 23);
+		panel.add(spinner);
 		loadData();
 	}
 
@@ -555,11 +534,10 @@ public class Main {
 	}
 
 	public static int getThreads() {
-		return Integer.parseInt(lblThreadAmount.getText());
+		return (int) spinner.getValue();
 	}
 
 	public static void setThreads(int threads) {
-		lblThreadAmount.setText(Integer.toString(threads));
 	}
 
 	public static void addTransaction(String trans) {
