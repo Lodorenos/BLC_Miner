@@ -13,11 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
-/* 
- * SubmitterClass.java
- * Submits solution to the server
+ * @author Mohatu
+ * @version 2.9
  */
 
 package net.mohatu.bloocoin.miner;
@@ -51,8 +48,7 @@ public class SubmitList implements Runnable {
 		BufferedReader br;
 		String line;
 		try {
-			is = new FileInputStream(
-					System.getProperty("user.home")
+			is = new FileInputStream(System.getProperty("user.home")
 					+ "/.bloocoin/solved.dat");
 			br = new BufferedReader(new InputStreamReader(is,
 					Charset.forName("UTF-8")));
@@ -84,7 +80,7 @@ public class SubmitList implements Runnable {
 						new InputStreamReader(is));
 				solution = solved.get(i);
 				hash = DigestUtils.sha512Hex(solution);
-				
+
 				String command = "{\"cmd\":\"check"
 						+ "\",\"winning_string\":\"" + solution
 						+ "\",\"winning_hash\":\"" + hash + "\",\"addr\":\""
@@ -99,8 +95,7 @@ public class SubmitList implements Runnable {
 
 				if (result.contains("\"success\": true")) {
 					System.out.println("Result: Submitted");
-					Main.updateStatusText(solution + " submitted",
-							Color.blue);
+					Main.updateStatusText(solution + " submitted", Color.blue);
 					Thread gc = new Thread(new Coins());
 					gc.start();
 				} else if (result.contains("\"success\": false")) {

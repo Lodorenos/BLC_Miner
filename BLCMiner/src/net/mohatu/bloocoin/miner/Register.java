@@ -13,11 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
- */
-
-/* 
- * SubmitterClass.java
- * Submits solution to the server
+ * @author Mohatu
+ * @version 2.9 
  */
 
 package net.mohatu.bloocoin.miner;
@@ -115,7 +112,7 @@ public class Register implements Runnable {
 		return buf.toString();
 	}
 
-	private void saveBloostamp() { 
+	private void saveBloostamp() {
 		File bloocoinFolder = new File(System.getProperty("user.home")
 				+ "/.bloocoin");
 		if (!bloocoinFolder.exists()) {
@@ -133,7 +130,6 @@ public class Register implements Runnable {
 			out.print(addr + ":" + key);
 			out.close();
 			Main.loadDataPub();
-			
 
 		} catch (IOException e) {
 			System.out.println("Saving failed:");

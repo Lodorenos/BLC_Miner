@@ -13,6 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ * @author Mohatu
+ * @version 2.9
  */
 
 package net.mohatu.bloocoin.miner;
@@ -56,25 +58,18 @@ public class Main {
 	private static boolean mining = true;
 	private static long counter = 0;
 	private JFrame frmBlcMiner;
-	private static String addr = "";
-	private static String key = "";
+	private static String addr = "", key = "";
 	private static final String url = "server.bloocoin.org";
 	private static final int port = 3122;
-	private static JLabel lblStatus;
-	private static JLabel lblTriedAmount;
-	private static JLabel lblSolvedAmount;
-	private static JLabel lblKHsAmount;
+	private static JLabel lblStatus, lblTriedAmount, lblSolvedAmount,
+			lblKHsAmount, lblThreads, lblThreadAmount;
 	private static JTable table;
-	private static JButton btnStartMining;
-	private static JLabel lblThreads;
-	private static JLabel lblThreadAmount;
-	private static JButton btnLeft;
-	private static JButton btnRight;
+	private static JButton btnStartMining, btnLeft, btnRight;
 	public static JScrollPane scrollPane;
 	public static DefaultTableModel solved = new DefaultTableModel(
-			new Object[] { "Solved" }, 0);
-	public static DefaultTableModel transactions = new DefaultTableModel(
-			new Object[] { "To:", "From:", "Amount:" }, 0);
+			new Object[] { "Solved" }, 0),
+			transactions = new DefaultTableModel(new Object[] { "To:", "From:",
+					"Amount:" }, 0);
 	private static JLabel lblBLC;
 	private static long startTime = System.nanoTime();
 	private JLabel lblTime;
@@ -415,16 +410,17 @@ public class Main {
 								"Generate Custom Address",
 								JOptionPane.QUESTION_MESSAGE);
 				if (!(s == null)) {
-					if (!(s.contains("!") || s.contains("\\") || s.contains("/")
-							|| s.contains("{") || s.contains("}")
-							|| s.contains(":") || s.contains(".")
-							|| s.contains("\"") || s.contains(";")
-							|| s.contains(",") || s.contains("|")
-							|| s.contains("*") || s.contains("+")
-							|| s.contains("-") || s.contains("&")
-							|| s.contains("#") || s.contains("@")
-							|| s.contains("[") || s.contains("]")
-							|| s.contains("<") || s.contains(">"))) {
+					if (!(s.contains("!") || s.contains("\\")
+							|| s.contains("/") || s.contains("{")
+							|| s.contains("}") || s.contains(":")
+							|| s.contains(".") || s.contains("\"")
+							|| s.contains(";") || s.contains(",")
+							|| s.contains("|") || s.contains("*")
+							|| s.contains("+") || s.contains("-")
+							|| s.contains("&") || s.contains("#")
+							|| s.contains("@") || s.contains("[")
+							|| s.contains("]") || s.contains("<") || s
+							.contains(">"))) {
 						if (s.length() == 40) {
 							Thread rg = new Thread(new RegCustom(s));
 							rg.start();
@@ -435,12 +431,12 @@ public class Main {
 											"Please enter a string 40 characters in length.",
 											"Alert", JOptionPane.ERROR_MESSAGE);
 						}
-					}else{
+					} else {
 						JOptionPane
-						.showMessageDialog(
-								Main.scrollPane,
-								"Please refrain from using special characters.",
-								"Alert", JOptionPane.ERROR_MESSAGE);
+								.showMessageDialog(
+										Main.scrollPane,
+										"Please refrain from using special characters.",
+										"Alert", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -458,11 +454,13 @@ public class Main {
 					"https://raw.github.com/Mohatu/BLC_Miner/master/BLCMiner/version");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					versionURL.openStream()));
-			double version = Double.parseDouble(in.readLine());
+			double version = Double.parseDouble(in.readLine().split(":")[0]);
+			String updateMessage = in.readLine().split(":")[1];
 
 			if (version > VERSION) {
 				JOptionPane.showMessageDialog(null,
-						"There is a new version available! (" + version
+						"There is a new version available! \n(" + version
+								+ ": " + updateMessage
 								+ ")\nhttp://www.mohatu.net/miner");
 			}
 
