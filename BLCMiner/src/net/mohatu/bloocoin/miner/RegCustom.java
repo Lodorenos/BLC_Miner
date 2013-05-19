@@ -129,7 +129,7 @@ public class RegCustom implements Runnable {
 			PrintWriter out = new PrintWriter(new BufferedWriter(
 					new FileWriter(System.getProperty("user.home")
 							+ "/.bloocoin/bloostamp" + addr)));
-			out.print("bloostamp" + addr + " created.");
+			out.print(addr + ":" + key);
 			Main.updateStatusText("bloostamp" + addr + " created.", Color.blue);
 			out.close();
 			Main.loadDataPub();
