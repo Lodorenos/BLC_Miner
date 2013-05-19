@@ -433,6 +433,7 @@ public class Main {
 					"https://raw.github.com/Mohatu/BLC_Miner/master/BLCMiner/version");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					versionURL.openStream()));
+			System.out.println("Version: " + VERSION + "| Latest: " + in.readLine().split(":")[0]);
 			double version = Double.parseDouble(in.readLine().split(":")[0]);
 			String updateMessage = in.readLine().split(":")[1];
 
