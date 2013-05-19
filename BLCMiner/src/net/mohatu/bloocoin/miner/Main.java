@@ -80,7 +80,7 @@ public class Main {
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 3.0;
+	private static final double VERSION = 3.05;
 
 	/**
 	 * Launch the application.
@@ -433,19 +433,24 @@ public class Main {
 					"https://raw.github.com/Mohatu/BLC_Miner/master/BLCMiner/version");
 			BufferedReader in = new BufferedReader(new InputStreamReader(
 					versionURL.openStream()));
-			System.out.println("Version: " + VERSION + "| Latest: " + in.readLine().split(":")[0]);
-			double version = Double.parseDouble(in.readLine().split(":")[0]);
-			String updateMessage = in.readLine().split(":")[1];
-
+			String data = in.readLine();
+			String versionNumber = data.split(":")[0];
+			String versionInfo = data.split(":")[1];
+			double version = Double.parseDouble(versionNumber);
+			System.out.println(version);
 			if (version > VERSION) {
+				System.out.println("Not latest!");
 				JOptionPane.showMessageDialog(null,
 						"There is a new version available! \n(" + version
-								+ ": " + updateMessage
+								+ ": " + versionInfo
 								+ ")\nhttp://www.mohatu.net/miner");
+			}else{
+				System.out.println("Lastest");
 			}
 
 			in.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
