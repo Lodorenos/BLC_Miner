@@ -1,19 +1,19 @@
 /*
-* Copyright (C) 2013 Mohatu.net
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>
-*/
+ * Copyright (C) 2013 Mohatu.net
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>
+ */
 
 package net.mohatu.bloocoin.miner;
 
@@ -52,7 +52,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 
-public class Main{
+public class Main {
 	private static boolean mining = true;
 	private static long counter = 0;
 	private JFrame frmBlcMiner;
@@ -74,15 +74,14 @@ public class Main{
 	public static DefaultTableModel solved = new DefaultTableModel(
 			new Object[] { "Solved" }, 0);
 	public static DefaultTableModel transactions = new DefaultTableModel(
-			new Object[] { "To:", "From:","Amount:" }, 0);
+			new Object[] { "To:", "From:", "Amount:" }, 0);
 	private static JLabel lblBLC;
 	private static long startTime = System.nanoTime();
 	private JLabel lblTime;
 	private static JLabel lblTimeAmount;
 	private JLabel lblTotalBlc;
 	private static JLabel lblTotalBLC;
-	private static final double VERSION = 2.8;
-
+	private static final double VERSION = 2.9;
 
 	/**
 	 * Launch the application.
@@ -114,8 +113,7 @@ public class Main{
 	 */
 	private void initialize() {
 		try {
-			UIManager.setLookAndFeel(UIManager
-					.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (UnsupportedLookAndFeelException e) {
 			// handle exception
 		} catch (ClassNotFoundException e) {
@@ -127,7 +125,7 @@ public class Main{
 		}
 		frmBlcMiner = new JFrame();
 		frmBlcMiner.setResizable(false);
-		frmBlcMiner.setTitle("BLC Client v"+VERSION);
+		frmBlcMiner.setTitle("BLC Client v" + VERSION);
 		frmBlcMiner.setBounds(100, 100, 442, 500);
 		frmBlcMiner.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -140,11 +138,11 @@ public class Main{
 		btnStartMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				startTime = System.nanoTime();
-				//disable start button
+				// disable start button
 				btnStartMining.setEnabled(false);
 				btnLeft.setEnabled(false);
 				btnRight.setEnabled(false);
-				//Start mining
+				// Start mining
 				Thread miner = new Thread(new MinerHandler());
 				Thread khs = new Thread(new KhsUpdate());
 				miner.start();
@@ -160,9 +158,9 @@ public class Main{
 		btnStopMining.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnStopMining.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Stop mining
+				// Stop mining
 				mining = false;
-				//enable start button
+				// enable start button
 				btnStartMining.setEnabled(true);
 				btnRight.setEnabled(true);
 				btnLeft.setEnabled(true);
@@ -206,38 +204,42 @@ public class Main{
 		scrollPane.setToolTipText("Solved hashes");
 		scrollPane.setBounds(199, 44, 225, 99);
 		panel.add(scrollPane);
-		
+
 		lblStatus = new JLabel("Status: Loading user data");
-		lblStatus.setBounds(10, 447, 300, 14);
+		lblStatus.setBounds(10, 447, 279, 14);
 		panel.add(lblStatus);
-		
+
 		lblBLC = new JLabel("BLC: 0");
 		lblBLC.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblBLC.setBounds(299, 447, 101, 14);
+		lblBLC.setBounds(290, 447, 74, 14);
 		panel.add(lblBLC);
-		
+
 		JButton btnInfo = new JButton("");
 		btnInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String creatorAddress = "40d1749657b1c36d24ebda0642c6b5af028c35cc  ";
-				JTextArea address = new JTextArea("Donate address: \n"+creatorAddress+"\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner");
+				JTextArea address = new JTextArea(
+						"Donate address: \n"
+								+ creatorAddress
+								+ "\n\n©2013 Mohatu.net\nLicenced under the GNU GPLv3 license\nhttp://github.com/mohatu/blc_miner");
 				address.setEditable(false);
-				JOptionPane.showMessageDialog(frmBlcMiner,address
-					    ,"Info",JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frmBlcMiner, address, "Info",
+						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/qm.png")));
+		btnInfo.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"net/mohatu/bloocoin/assets/qm.png")));
 		btnInfo.setBounds(391, 5, 33, 35);
 		panel.add(btnInfo);
-		
+
 		table = new JTable(1, 1);
 		table.setModel(transactions);
-		
+
 		scrollPane = new JScrollPane(table);
 		scrollPane.setToolTipText("Transaction history");
 		scrollPane.setBounds(10, 154, 414, 248);
 		panel.add(scrollPane);
-		
+
 		JButton btnSendCoins = new JButton("Send Coins");
 		btnSendCoins.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnSendCoins.addActionListener(new ActionListener() {
@@ -248,7 +250,7 @@ public class Main{
 		});
 		btnSendCoins.setBounds(10, 413, 135, 23);
 		panel.add(btnSendCoins);
-		
+
 		JButton btnNewButton = new JButton("Refresh Transactions");
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnNewButton.addActionListener(new ActionListener() {
@@ -258,60 +260,63 @@ public class Main{
 		});
 		btnNewButton.setBounds(150, 413, 135, 23);
 		panel.add(btnNewButton);
-		
+
 		lblThreads = new JLabel("Threads:");
 		lblThreads.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblThreads.setHorizontalAlignment(SwingConstants.TRAILING);
 		lblThreads.setBounds(176, 14, 65, 14);
 		panel.add(lblThreads);
-		
+
 		btnLeft = new JButton("");
 		btnLeft.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(getThreads()>1){
-					setThreads(getThreads()-1);
+				if (getThreads() > 1) {
+					setThreads(getThreads() - 1);
 				}
 			}
 		});
-		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/left.png")));
+		btnLeft.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"net/mohatu/bloocoin/assets/left.png")));
 		btnLeft.setBounds(245, 10, 39, 23);
 		panel.add(btnLeft);
-		
+
 		btnRight = new JButton("");
 		btnRight.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setThreads(getThreads()+1);
+				setThreads(getThreads() + 1);
 			}
 		});
-		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/right.png")));
+		btnRight.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"net/mohatu/bloocoin/assets/right.png")));
 		btnRight.setBounds(340, 10, 39, 23);
 		panel.add(btnRight);
-		
+
 		lblThreadAmount = new JLabel("0");
 		lblThreadAmount.setHorizontalAlignment(SwingConstants.CENTER);
 		lblThreadAmount.setBounds(290, 14, 40, 14);
 		panel.add(lblThreadAmount);
-		
+
 		lblTime = new JLabel("Time:");
 		lblTime.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblTime.setBounds(10, 70, 46, 14);
 		panel.add(lblTime);
-		
+
 		lblTimeAmount = new JLabel("00:00:00");
 		lblTimeAmount.setBounds(70, 70, 123, 14);
 		panel.add(lblTimeAmount);
-		
+
 		JButton btnFromList = new JButton("From List");
 		btnFromList.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//Send list to server
+				// Send list to server
 				Object[] options = { "Yes", "No" };
-				int answer = JOptionPane.showOptionDialog(
-						Main.scrollPane,
-						"This will send ALL solutions to\nthe server, and may take a while.\n\nContinue?","Send All?",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.INFORMATION_MESSAGE, null, options,
-						options[1]);
+				int answer = JOptionPane
+						.showOptionDialog(
+								Main.scrollPane,
+								"This will send ALL solutions to\nthe server, and may take a while.\n\nContinue?",
+								"Send All?", JOptionPane.YES_NO_OPTION,
+								JOptionPane.INFORMATION_MESSAGE, null, options,
+								options[1]);
 				if (answer == JOptionPane.YES_OPTION) {
 					Thread slc = new Thread(new SubmitList());
 					slc.start();
@@ -323,16 +328,16 @@ public class Main{
 		btnFromList.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		btnFromList.setBounds(289, 413, 108, 23);
 		panel.add(btnFromList);
-		
+
 		lblTotalBlc = new JLabel("Total BLC:");
 		lblTotalBlc.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		lblTotalBlc.setBounds(10, 90, 55, 14);
 		panel.add(lblTotalBlc);
-		
+
 		lblTotalBLC = new JLabel("0");
 		lblTotalBLC.setBounds(70, 90, 123, 14);
 		panel.add(lblTotalBLC);
-		
+
 		JButton btnRef = new JButton("");
 		btnRef.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -340,59 +345,113 @@ public class Main{
 				refresh.start();
 			}
 		});
-		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/ref.png")));
-		btnRef.setBounds(400, 443, 23, 23);
+		btnRef.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"net/mohatu/bloocoin/assets/ref.png")));
+		btnRef.setBounds(373, 443, 23, 23);
 		panel.add(btnRef);
-		
+
 		JButton btnImport = new JButton("");
 		btnImport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object[] options = { "Yes", "No" };
-				int answer = JOptionPane.showOptionDialog(
-						Main.scrollPane,
-						"Import custom bloostamp file?", "Import",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, options,
-						options[1]);
+				int answer = JOptionPane
+						.showOptionDialog(Main.scrollPane,
+								"Import custom bloostamp file?", "Import",
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.QUESTION_MESSAGE, null, options,
+								options[1]);
 				if (answer == JOptionPane.YES_OPTION) {
-					//Import custom bloostamp
+					// Import custom bloostamp
 					JFileChooser chooser = new JFileChooser();
-					chooser.setCurrentDirectory(new File(System.getProperty("user.home")
-					+ "/.bloocoin/"));
-				    int returnVal = chooser.showOpenDialog(scrollPane);
-				    if(returnVal == JFileChooser.APPROVE_OPTION) {
-				    	try {
-							FileInputStream stream = new FileInputStream(chooser.getSelectedFile());
+					chooser.setCurrentDirectory(new File(System
+							.getProperty("user.home") + "/.bloocoin/"));
+					int returnVal = chooser.showOpenDialog(scrollPane);
+					if (returnVal == JFileChooser.APPROVE_OPTION) {
+						try {
+							FileInputStream stream = new FileInputStream(
+									chooser.getSelectedFile());
 							FileChannel fc = stream.getChannel();
-							MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
-									fc.size());
-							String data = (Charset.defaultCharset().decode(bb).toString());
+							MappedByteBuffer bb = fc.map(
+									FileChannel.MapMode.READ_ONLY, 0, fc.size());
+							String data = (Charset.defaultCharset().decode(bb)
+									.toString());
 							addr = data.split(":")[0];
 							key = data.split(":")[1];
 							stream.close();
 						} catch (FileNotFoundException e) {
-							updateStatusText(chooser.getSelectedFile().getName() + " not found!",Color.red);
+							updateStatusText(chooser.getSelectedFile()
+									.getName() + " not found!", Color.red);
 							e.printStackTrace();
 						} catch (IOException e) {
-							updateStatusText("IO Exception: " + chooser.getSelectedFile().getName(),Color.red);
+							updateStatusText("IO Exception: "
+									+ chooser.getSelectedFile().getName(),
+									Color.red);
 							e.printStackTrace();
 						}
-				    	Main.updateStatusText("Bloostamp data loaded successfully",Color.black);
+						Main.updateStatusText(
+								"Bloostamp data loaded successfully",
+								Color.black);
 						System.out.println("Custom loostamp data loaded.");
 						System.out.println("Getting new transactions.");
 						getTransactions();
 						System.out.println("Getting new coin count.");
 						getCoins();
-				    }
+					}
 				}
 			}
 		});
-		btnImport.setIcon(new ImageIcon(getClass().getClassLoader().getResource("net/mohatu/bloocoin/assets/imp.png")));
+		btnImport.setIcon(new ImageIcon(getClass().getClassLoader()
+				.getResource("net/mohatu/bloocoin/assets/imp.png")));
 		btnImport.setBounds(400, 413, 23, 23);
 		panel.add(btnImport);
+
+		JButton btnNew = new JButton("");
+		btnNew.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// Custom bloostamp
+				String s = (String) JOptionPane
+						.showInputDialog(scrollPane,
+								"Enter custom address (40 characters):",
+								"Generate Custom Address",
+								JOptionPane.QUESTION_MESSAGE);
+				if (!(s == null)) {
+					if (!(s.contains("!") || s.contains("\\") || s.contains("/")
+							|| s.contains("{") || s.contains("}")
+							|| s.contains(":") || s.contains(".")
+							|| s.contains("\"") || s.contains(";")
+							|| s.contains(",") || s.contains("|")
+							|| s.contains("*") || s.contains("+")
+							|| s.contains("-") || s.contains("&")
+							|| s.contains("#") || s.contains("@")
+							|| s.contains("[") || s.contains("]")
+							|| s.contains("<") || s.contains(">"))) {
+						if (s.length() == 40) {
+							Thread rg = new Thread(new RegCustom(s));
+							rg.start();
+						} else {
+							JOptionPane
+									.showMessageDialog(
+											Main.scrollPane,
+											"Please enter a string 40 characters in length.",
+											"Alert", JOptionPane.ERROR_MESSAGE);
+						}
+					}else{
+						JOptionPane
+						.showMessageDialog(
+								Main.scrollPane,
+								"Please refrain from using special characters.",
+								"Alert", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		btnNew.setIcon(new ImageIcon(getClass().getClassLoader().getResource(
+				"net/mohatu/bloocoin/assets/new.png")));
+		btnNew.setBounds(401, 443, 23, 23);
+		panel.add(btnNew);
 		loadData();
 	}
-	
+
 	private static void versionCheck() {
 		try {
 			URL versionURL = new URL(
@@ -402,10 +461,9 @@ public class Main{
 			double version = Double.parseDouble(in.readLine());
 
 			if (version > VERSION) {
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"There is a new version available! (" + version + ")\nhttp://www.mohatu.net/miner");
+				JOptionPane.showMessageDialog(null,
+						"There is a new version available! (" + version
+								+ ")\nhttp://www.mohatu.net/miner");
 			}
 
 			in.close();
@@ -421,24 +479,25 @@ public class Main{
 		lblKHsAmount.setText(Double.toString(khs));
 		lblTriedAmount.setText(Long.toString(counter));
 	}
-	
-	public static void setTime(int hour, int minute, int second){
+
+	public static void setTime(int hour, int minute, int second) {
 		String hourString, minuteString, secondString;
 		hourString = Integer.toString(hour);
 		minuteString = Integer.toString(minute);
 		secondString = Integer.toString(second);
-		
-		if(hour<10){
-			hourString = "0"+hour;
+
+		if (hour < 10) {
+			hourString = "0" + hour;
 		}
-		
-		if(minute<10){
-			minuteString = "0"+minute;
+
+		if (minute < 10) {
+			minuteString = "0" + minute;
 		}
-		if(second<10){
-			secondString = "0"+second;
+		if (second < 10) {
+			secondString = "0" + second;
 		}
-		lblTimeAmount.setText(hourString+":"+minuteString+":"+secondString);
+		lblTimeAmount.setText(hourString + ":" + minuteString + ":"
+				+ secondString);
 	}
 
 	public static void updateSolved(String solution) {
@@ -454,83 +513,83 @@ public class Main{
 	public static boolean getStatus() {
 		return mining;
 	}
-	
-	public static void updateStatusText(String status, Color color){
+
+	public static void updateStatusText(String status, Color color) {
 		lblStatus.setText("Status: " + status);
 		lblStatus.setForeground(color);
 	}
-	
-	public static String getAddr(){
+
+	public static String getAddr() {
 		return addr;
 	}
-	
-	public static String getKey(){
+
+	public static String getKey() {
 		return key;
 	}
-	
-	public static String getURL(){
+
+	public static String getURL() {
 		return url;
 	}
-	
-	public static int getPort(){
+
+	public static int getPort() {
 		return port;
 	}
-	
-	public static void updateBLC(int blc){
+
+	public static void updateBLC(int blc) {
 		lblBLC.setText("BLC: " + Integer.toString(blc));
 	}
-	
-	private static void getCoins(){
+
+	private static void getCoins() {
 		Thread gc = new Thread(new Coins());
 		gc.start();
 	}
-	
-	private static void getTransactions(){
+
+	private static void getTransactions() {
 		clearDFM();
 		Thread gt = new Thread(new Transactions());
 		gt.start();
 	}
-	
-	public static void clearDFM(){
+
+	public static void clearDFM() {
 		for (int i = transactions.getRowCount() - 1; i >= 0; i--) {
-	        transactions.removeRow(i);
-	    }	
+			transactions.removeRow(i);
+		}
 	}
-	
-	public static int getThreads(){
+
+	public static int getThreads() {
 		return Integer.parseInt(lblThreadAmount.getText());
 	}
-	
-	public static void setThreads(int threads){
+
+	public static void setThreads(int threads) {
 		lblThreadAmount.setText(Integer.toString(threads));
 	}
-	
-	public static void addTransaction(String trans){
+
+	public static void addTransaction(String trans) {
 		String[] transactionData = trans.split(",");
-		transactionData[1]=transactionData[1].replace(" amount: ", "");
-		transactionData[2]=transactionData[2].replace(" from: ", "");
-		transactionData[2]=transactionData[2].replace("}", "");
-		transactionData[2]=transactionData[2].replace("]", "");
-		transactions.addRow(new Object[] {transactionData[0],transactionData[2],transactionData[1]});
+		transactionData[1] = transactionData[1].replace(" amount: ", "");
+		transactionData[2] = transactionData[2].replace(" from: ", "");
+		transactionData[2] = transactionData[2].replace("}", "");
+		transactionData[2] = transactionData[2].replace("]", "");
+		transactions.addRow(new Object[] { transactionData[0],
+				transactionData[2], transactionData[1] });
 	}
-	
-	public static long getStartTime(){
+
+	public static long getStartTime() {
 		return startTime;
 	}
-	
-	public static void loadDataPub(){
+
+	public static void loadDataPub() {
 		loadData();
 	}
-	
-	public static void setTotalBLC(long tot){
+
+	public static void setTotalBLC(long tot) {
 		lblTotalBLC.setText(Long.toString(tot));
 	}
-	
+
 	private static void loadData() {
 		try {
 			FileInputStream stream = new FileInputStream(new File(
-					System.getProperty("user.home")
-					+ "/.bloocoin/bloostamp"));
+					System.getProperty("user.home") + "/.bloocoin/bloostamp"));
 			FileChannel fc = stream.getChannel();
 			MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0,
 					fc.size());
@@ -538,24 +597,27 @@ public class Main{
 			addr = data.split(":")[0];
 			key = data.split(":")[1];
 			stream.close();
-			Main.updateStatusText("Bloostamp data loaded successfully",Color.black);
+			Main.updateStatusText("Bloostamp data loaded successfully",
+					Color.black);
 			System.out.println("Bloostamp data loaded.");
 			System.out.println("Getting transactions.");
 			getTransactions();
 			System.out.println("Getting coin count.");
 			getCoins();
-			setThreads((Runtime.getRuntime().availableProcessors()/2)+1);
+			setThreads((Runtime.getRuntime().availableProcessors() / 2) + 1);
 		} catch (FileNotFoundException fnfe) {
-			Main.updateStatusText("Could not find the bloostamp file!",Color.red);
+			Main.updateStatusText("Could not find the bloostamp file!",
+					Color.red);
 			System.out.println("Unable to find the bloostamp file");
-			
+
 			Object[] options = { "Yes", "No" };
-			int answer = JOptionPane.showOptionDialog(
-					Main.scrollPane,
-					"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)", "New Registration",
-					JOptionPane.YES_NO_OPTION,
-					JOptionPane.INFORMATION_MESSAGE, null, options,
-					options[1]);
+			int answer = JOptionPane
+					.showOptionDialog(
+							Main.scrollPane,
+							"Bloostamp file not found.\nGenerate a new one?\n(Will exit if No)",
+							"New Registration", JOptionPane.YES_NO_OPTION,
+							JOptionPane.INFORMATION_MESSAGE, null, options,
+							options[1]);
 			if (answer == JOptionPane.YES_OPTION) {
 				Thread rc = new Thread(new Register());
 				rc.start();
@@ -563,7 +625,7 @@ public class Main{
 				System.exit(0);
 			}
 		} catch (IOException ioe) {
-			Main.updateStatusText("IOException",Color.red);
+			Main.updateStatusText("IOException", Color.red);
 			System.out.println("IOException.");
 			ioe.printStackTrace();
 		}
